@@ -1,0 +1,63 @@
+{
+    "inventory": [
+        {
+            "item": {
+                "id": "CPU_01",
+                "type": "CPU",
+                "name": "PyProcessor Thunderbolt",
+                "price": 100,
+                "power_draw": 400,
+                "socket": "LGA"
+            }
+        },
+        {
+            "item": {
+                "id": "GPU_01",
+                "type": "GPU",
+                "name": "GraphiGuru Explorer",
+                "price": 100,
+                "power_draw": 300,
+                "overclockable": false
+            }
+        },
+        {
+            "item": {
+                "id": "RAM_01",
+                "type": "RAM",
+                "name": "MemoryMajesty 8GB",
+                "price": 100,
+                "power_draw": 5,
+                "capacity": 8
+            }
+        },
+        {
+            "item": {
+                "id": "PSU_01",
+                "type": "PSU",
+                "name": "PowerPulse 950W",
+                "price": 100,
+                "power_supplied": 950
+            }
+        },
+        {
+            "item": {
+                "id": "MB_01",
+                "type": "Motherboard",
+                "name": "MotherMainframe Elite",
+                "power_draw": 10,
+                "socket": "LGA",
+                "ram_slots": 4,
+                "price": 100
+            }
+        },
+        {
+            "item": {
+                "id": "STORAGE_01",
+                "type": "Storage",
+                "name": "DataDepot 1TB",
+                "price": 100,
+                "capacity": 1000
+            }
+        }
+    ]
+}

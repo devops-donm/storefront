@@ -1,4 +1,6 @@
 import sys
+import os
+import json
 
 def get_budget():
     """
@@ -17,7 +19,42 @@ def get_budget():
         except ValueError as e:
             print(f"Invalid input. {e} Please enter a valid positive integer.")
 
+def process_inventory_file(inventory_file):
+    # Check if the file has a .json extension
+    if not inventory_file.endswith('.json'):
+        print("Error: File must be a .json file.")
+        sys.exit(1)
+
+    # Check if the file exists
+    if not os.path.isfile(inventory_file):
+        print(f"Error: The file '{inventory_file}' does not exist.")
+        sys.exit(1)
+
+    # Load the JSON data
+    try:
+        with open(inventory_file, 'r') as file:
+            inventory_data = json.load(file)
+            return inventory_data
+    except json.JSONDecodeError as e:
+        print(f"Error: Could not decode JSON.\n{e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error: Unable to load the file.\n{e}")
+        sys.exit(1)
+
 def main():
+    """
+    Main function to run the application.
+    """
+
+    if len(sys.argv) != 2:
+        print()
+        print()
+        sys.exit(1)
+    
+    inventory_file = sys.argv[1]
+    inventory_data = process_inventory_file(inventory_file)
+
     user_name = input("What is your name? ")
     budget = get_budget()
 
