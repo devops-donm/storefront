@@ -2,6 +2,8 @@ import sys
 import os
 import json
 
+from src.utils import clear_screen
+
 def get_budget():
     """
     Prompt the user to enter their budget.
@@ -57,9 +59,11 @@ def main():
 
     user_name = input("What is your name? ")
     budget = get_budget()
+    clear_screen()
 
 if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
+        clear_screen()
         print("Goodbye")
