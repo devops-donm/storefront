@@ -3,6 +3,7 @@ import os
 import json
 
 from src.utils import clear_screen
+from src.menu import main_menu
 
 def get_budget():
     """
@@ -60,6 +61,8 @@ def main():
     user_name = input("What is your name? ")
     budget = get_budget()
     clear_screen()
+
+    main_menu(user_name, budget, inventory_data)
 
 if __name__ == "__main__":
     try:
