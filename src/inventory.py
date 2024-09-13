@@ -44,23 +44,34 @@ class Inventory:
                 for item in filtered_items:
                     print(item)
 
-    def list_details(self):
-        print("\nBy the Part ID what part would you like the details for? ")
-        print("'m' for Main Menu")
-        user_input = input("Option: ").lower()
-
-        if user_input == 'm':
-            clear_screen()
-            return
-
-        clear_screen()
+    def get_details(self, part_id=None):
         part_details = None
-        for item_keys in self.inventory_data["inventory"]:
-            if item_keys["item"]["id"].lower() == user_input:
-                part_details = item_keys
         
-        if part_details is None:
-            print(f"Part ID {user_input.upper()} did not return a match.")
-            print("Please review parts list and try again.\n")
+        if part_id is None:
+            print("\nBy the Part ID what part would you like the details for? ")
+            print("'m' for Main Menu")
+            user_input = input("Option: ").lower()
+
+            if user_input == 'm':
+                clear_screen()
+                return
+
+            clear_screen()
+            for item_keys in self.inventory_data["inventory"]:
+                if item_keys["item"]["id"].lower() == user_input:
+                    part_details = item_keys
+            
+            if part_details is None:
+                print(f"Part ID {user_input.upper()} did not return a match.")
+                print("Please review parts list and try again.\n")
+            else:
+                print(f"\n{part_details}\n")
+        
         else:
-            print(f"\n{part_details}\n")
+            for item_keys in self.inventory_data['inventory']:
+                if item_keys['item']['id'].lower() == part_id.lower():
+                    part_details = item_keys
+            if part_details is None:
+                return None
+            else:
+                return part_details
