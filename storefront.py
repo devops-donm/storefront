@@ -50,8 +50,8 @@ def main():
     """
 
     if len(sys.argv) != 2:
-        print()
-        print()
+        print("\nUsage: python3 storefront.py inventory.json")
+        print("Or you can make storefront.py an exicutable and run ./storefront.py inventory.json\n")
         sys.exit(1)
     
     inventory_file = sys.argv[1]
