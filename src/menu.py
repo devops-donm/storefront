@@ -32,21 +32,26 @@ def display_menu(user_name, budget):
     print(user_name)
     print(f"${budget}.00")
     print("--------------------------------------------------------------------------")
-    print("1. list (L)")
+    print("1.  list    (L)")
+    print("2.  details (D)")
     print("--------------------------------------------------------------------------")
     print("H) Help    E) Exit")
 
-def main_menu(user_name, budget, inventory_data):
+def main_menu(user_name, budget, inventory_file_data):
     while True:
-        inventory_object = Inventory(inventory_data)
+        inventory_object = Inventory(inventory_file_data)
 
         display_menu(user_name, budget)
         user_input = input("\nSelect an option: ").strip().lower()
 
         # Dictionary of available command options
         menu_dict: dict = {
-            "list": lambda: inventory_object.list_parts(),
-            "l": lambda: inventory_object.list_parts(),
+            "1": inventory_object.list_parts,
+            "list": inventory_object.list_parts,
+            "l": inventory_object.list_parts,
+            "2": inventory_object.list_details,
+            "detail": inventory_object.list_details,
+            "d": inventory_object.list_details,
             "help": help_option,
             "h": help_option,
             "exit": exit_program,
