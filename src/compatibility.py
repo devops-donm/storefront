@@ -64,16 +64,14 @@ class Compatibility:
                         print(f"\n- Motherboard ({motherboards['id']}) and CPU ({cpus['id']}) are compatible.")
             
         #TODO: 2. Perform check to verify that RAM IDs are the same when placed with a motherboard
+        if part_dict["ram"] and part_dict["motherboard"] and len(part_dict["ram"]) == 1:
+            print(f"\n- All motherboards are compatible when only given 1 RAM.")
+
         if part_dict["ram"] and part_dict["motherboard"] and len(part_dict["ram"]) >= 2:
-            
             # Handle the event where the RAM IDs are not the same.
             first_ram_id = part_dict["ram"][0]["id"]
-            ram_check = False
             for ram in part_dict["ram"][1:]:
                 if ram["id"] != first_ram_id:
-                    ram_check = False
-            #TODO: We need to fix this so that if all of the RAM is the same we print a message to the user.
-            # With more time I think this would be better.
                     print(f"\n- {first_ram_id} and {ram['id']} do not match. All motherboards require matching RAM.")
                 
                     
@@ -81,19 +79,20 @@ class Compatibility:
             for motherboard in part_dict["motherboard"]:
                 available_ram_slots = motherboard['ram_slots']
                 if len(part_dict["ram"]) > available_ram_slots:
-                    print(f'\n- Motherboard {motherboard} can\'t support all the {part_dict["ram"]} RAM you provided.')
+                    print(f'\n- Motherboard ({motherboard}) can\'t support all the ({part_dict["ram"]}) RAM you provided.')
                 else:
-                    print(f'\n- Motherboard {motherboard['id']} can support the total number of RAM provided.')
+                    print(f'\n- Motherboard ({motherboard['id']}) can support the total number of RAM provided.')
         
         #TODO: 4. Perform a powerdraw check. If more than one PSD is provided just give an error for that check
-        if len(part_dict["psu"]) >= 2:
-            print("""\n- This compatibility checker only supports 1 instance of a PSU.
-                  Please remove additional units and try again.""")
-        else:
-            available_power_draw = part_dict["psu"][0]["power_supplied"]
-            if available_power_draw < total_power_consuption:
-                print(f"""\n- Based on the items you input you will max out the PDU's total power supply.
-                      {available_power_draw}/{total_power_consuption}\n""")
+        if part_dict["psu"]:
+            if len(part_dict["psu"]) >= 2:
+                print("""\n- This compatibility checker only supports 1 instance of a PSU.
+                    Please remove additional units and try again.""")
             else:
-                print("\n- The provided PDU can support the total power draw of all the listed items.")            
+                available_power_draw = part_dict["psu"][0]["power_supplied"]
+                if available_power_draw < total_power_consuption:
+                    print(f"""\n- Based on the items you input you will max out the PDU's total power supply.
+                        {available_power_draw}/{total_power_consuption}\n""")
+                else:
+                    print("\n- The provided PDU can support the total power draw of all the listed items.")            
         
