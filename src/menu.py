@@ -6,6 +6,7 @@ import sys
 
 from src.utils import clear_screen
 from src.inventory import Inventory
+from src.compatibility import Compatibility
 
 def default():
     print("Not a valid option, please try again.")
@@ -32,14 +33,16 @@ def display_menu(user_name, budget):
     print(user_name)
     print(f"${budget}.00")
     print("--------------------------------------------------------------------------")
-    print("1.  list    (L)")
-    print("2.  details (D)")
+    print("1.  list          (L)")
+    print("2.  details       (D)")
+    print("3.  compatibility (C)")
     print("--------------------------------------------------------------------------")
     print("H) Help    E) Exit")
 
 def main_menu(user_name, budget, inventory_file_data):
     while True:
         inventory_object = Inventory(inventory_file_data)
+        compatibility_object = Compatibility(inventory_object)
 
         display_menu(user_name, budget)
         user_input = input("\nSelect an option: ").strip().lower()
@@ -49,11 +52,18 @@ def main_menu(user_name, budget, inventory_file_data):
             "1": inventory_object.list_parts,
             "list": inventory_object.list_parts,
             "l": inventory_object.list_parts,
-            "2": inventory_object.list_details,
-            "detail": inventory_object.list_details,
-            "d": inventory_object.list_details,
+            
+            "2": inventory_object.get_details,
+            "detail": inventory_object.get_details,
+            "d": inventory_object.get_details,
+            
+            "3": compatibility_object.compatibility_check,
+            "compatibility": compatibility_object.compatibility_check,
+            "c": compatibility_object.compatibility_check,
+
             "help": help_option,
             "h": help_option,
+            
             "exit": exit_program,
             "e": exit_program,
         }
