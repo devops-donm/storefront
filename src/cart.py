@@ -1,9 +1,8 @@
 from src.utils import clear_screen
 
 class Cart:
-    def __init__(self, user_name, budget, inventory_object):
-        self.user_name = user_name
-        self.budget = budget
+    def __init__(self, user_object, inventory_object):
+        self.user_object = user_object
         self.inventory_object = inventory_object
         
         self.total_cost: int = 0
@@ -76,8 +75,8 @@ class Cart:
     
     def cart_display(self):
         print("--------------------------------------------------------------------------")
-        print(f"Name:   {self.user_name}")
-        print(f"Budget: ${self.budget}.00")
+        print(f"Name:   {self.user_object.get_name()}")
+        print(f"Budget: ${self.user_object.get_budget()}.00")
         print("--------------------------------------------------------------------------")
         print(f"Total Cost: ${self.total_cost}")
         print("--------------------------------------------------------------------------")
