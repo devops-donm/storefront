@@ -5,23 +5,6 @@ import json
 from src.utils import clear_screen
 from src.menu import main_menu
 
-def get_budget():
-    """
-    Prompt the user to enter their budget.
-
-    Returns:
-        int: The user's budget.
-    """
-    while True:
-        try:
-            budget = int(input("What is your budget? "))
-            if budget <= 0:
-                raise ValueError("Budget must be a positive amount.")
-            else:
-                return budget
-        except ValueError as e:
-            print(f"Invalid input. {e} Please enter a valid positive integer.")
-
 def process_inventory_file(inventory_file):
     # Check if the file has a .json extension
     if not inventory_file.endswith('.json'):
@@ -58,11 +41,7 @@ def main():
     inventory_file = sys.argv[1]
     inventory_data = process_inventory_file(inventory_file)
 
-    user_name = input("What is your name? ")
-    budget = get_budget()
-    clear_screen()
-
-    main_menu(user_name, budget, inventory_data)
+    main_menu(inventory_data)
 
 if __name__ == "__main__":
     try:

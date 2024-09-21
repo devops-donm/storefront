@@ -8,6 +8,7 @@ from src.utils import clear_screen
 from src.inventory import Inventory
 from src.compatibility import Compatibility
 from src.cart import Cart
+from src.user import User
 
 def default():
     print("Not a valid option, please try again.")
@@ -41,22 +42,26 @@ def display_menu(user_name, budget):
     print("3.  compatibility")
     #print("4.  build")
     #print("5.  compatibility_build")
-    #print("6.  remove")
+    print("6.  remove")
     #print("7.  purchase")
     print("8.  cart")
     #print("9.  checkout")
-    #print("10. budget")
+    print("10. budget")
     print("--------------------------------------------------------------------------")
     print("11. Help    12. Exit")
 
-def main_menu(user_name, budget, inventory_file_data):
-    
+def main_menu(inventory_file_data):
+
+    user_object = User()
+    user_object.update_name()
+    user_object.update_budget()
+
     inventory_object = Inventory(inventory_file_data)
     compatibility_object = Compatibility(inventory_object)
-    cart_object = Cart(user_name, budget, inventory_object)
+    cart_object = Cart(user_object, inventory_object)
     
     while True:
-        display_menu(user_name, budget)
+        display_menu(user_object.get_name(), user_object.get_budget())
         user_input = input("\nSelect an option: ").strip().lower()
 
         # Dictionary of available command options
@@ -75,6 +80,9 @@ def main_menu(user_name, budget, inventory_file_data):
 
             "8": cart_object.cart_menu,
             "cart": cart_object.cart_menu,
+
+            "10": user_object.update_budget,
+            "budget": user_object.update_budget,
 
             "11": help_option,
             "help": help_option,
