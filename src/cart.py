@@ -6,7 +6,6 @@ class Cart:
         self.inventory_object = inventory_object
         
         self.total_cost: int = 0
-        self.total_power: int = 0
         self.cart = {}
     
     def default(self):
@@ -39,12 +38,10 @@ class Cart:
                 "part_data": clean_part_data
             }
             self.total_cost = self.total_cost + int(clean_part_data["price"])
-            self.total_power = self.total_power + int(clean_part_data["power_draw"])
 
         elif clean_part_data['id'] in self.cart:
             self.cart[part_id.upper()]["quantity"] += 1
             self.total_cost = self.total_cost + int(clean_part_data["price"])
-            self.total_power = self.total_power + int(clean_part_data["power_draw"])
         else:
             clear_screen()
             self.default()
