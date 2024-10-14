@@ -6,7 +6,6 @@ class Cart:
         self.inventory_object = inventory_object
         
         self.total_cost: int = 0
-        self.total_power: int = 0
         self.cart = {}
     
     def default(self):
@@ -17,41 +16,16 @@ class Cart:
         if part_id is None:
             print("What is the item ID of the part you want to add?")
             part_id = input("Item ID: ")
-            
-        part_data = self.inventory_object.get_details(part_id)
-
-        if part_data is None:
-            '''
-            if part_data is still None after user_input then part_id is not in inventory.
-            '''
             clear_screen()
-            self.default()
-        
-        clean_part_data = part_data["item"]
 
-        if not self.cart:
-            self.cart[clean_part_data["id"]] = {
-                "name": clean_part_data["name"],
-                "type": clean_part_data["type"],
-                "price": clean_part_data["price"],
-                "quantity": 1,
-                "power_draw": clean_part_data["power_draw"],
-                "part_data": clean_part_data
-            }
-            self.total_cost = self.total_cost + int(clean_part_data["price"])
-            self.total_power = self.total_power + int(clean_part_data["power_draw"])
-
-        elif clean_part_data['id'] in self.cart:
-            self.cart[part_id.upper()]["quantity"] += 1
-            self.total_cost = self.total_cost + int(clean_part_data["price"])
-            self.total_power = self.total_power + int(clean_part_data["power_draw"])
-        else:
-            clear_screen()
-            self.default()
-
-        clear_screen()
-        print("Your cart has been updated.\n")
+            for item in self.inventory_object.items:
+                if item.id.lower() == part_id.lower():
+                    self.cart[item.id] = item
+                    #TODO: Update Cost
     
+    def add_build(self, build_data):
+        self.cart["BUILD"] = build_data
+
     def remove_item(self, part_id=None):
         clear_screen()
         if part_id is None:
@@ -72,6 +46,7 @@ class Cart:
             clear_screen()
         else:
             clear_screen()
+            pass
     
     def cart_display(self):
         print("--------------------------------------------------------------------------")
@@ -80,10 +55,10 @@ class Cart:
         print("--------------------------------------------------------------------------")
         print(f"Total Cost: ${self.total_cost}")
         print("--------------------------------------------------------------------------")
-        print("1. add_item")
-        print("2. remove_item")
-        print("3. clear_cart")
-        print("4. main_menu")
+        print("1. add item")
+        print("2. remove item")
+        print("3. clear cart")
+        print("4. main menu")
         print("--------------------------------------------------------------------------")
 
     def cart_menu(self):
@@ -92,8 +67,7 @@ class Cart:
             if not self.cart:
                 print("Your cart is currently empty.\n")
             else:
-                for item_id, item_info in self.cart.items():
-                    print(item_info["name"])
+                print(self.cart)
             
             self.cart_display()
             user_input = input("\nSelect an option: ").strip().lower()

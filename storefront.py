@@ -4,6 +4,7 @@ import json
 
 from src.utils import clear_screen
 from src.menu import main_menu
+from src.inventory import load_inventory
 
 def process_inventory_file(inventory_file):
     # Check if the file has a .json extension
@@ -19,7 +20,8 @@ def process_inventory_file(inventory_file):
     # Load the JSON data
     try:
         with open(inventory_file, 'r') as file:
-            inventory_data = json.load(file)
+            json_data = json.load(file)
+            inventory_data = load_inventory(json_data)
             return inventory_data
     except json.JSONDecodeError as e:
         print(f"Error: Could not decode JSON.\n{e}")
