@@ -5,8 +5,9 @@ Menu system for storefront.py
 import sys
 
 from src.utils import clear_screen
-from src.inventory import Inventory
+from src.inventory import list_parts, get_details
 from src.compatibility import Compatibility
+from src.build import Build
 from src.cart import Cart
 from src.user import User
 
@@ -39,26 +40,24 @@ def display_menu(user_name, budget):
     print("--------------------------------------------------------------------------")
     print("1.  list")
     print("2.  details")
-    print("3.  compatibility")
-    #print("4.  build")
-    #print("5.  compatibility_build")
-    print("6.  remove")
-    #print("7.  purchase")
-    print("8.  cart")
-    #print("9.  checkout")
-    print("10. budget")
+    #print("3.  compatibility")
+    print("4.  build")
+    print("5.  cart")
+    print("6.  change budget")
+    print("7.  change username")
     print("--------------------------------------------------------------------------")
     print("11. Help    12. Exit")
 
-def main_menu(inventory_file_data):
+def main_menu(inventory_data):
 
     user_object = User()
     user_object.update_name()
     user_object.update_budget()
+    clear_screen()
 
-    inventory_object = Inventory(inventory_file_data)
-    compatibility_object = Compatibility(inventory_object)
-    cart_object = Cart(user_object, inventory_object)
+    #compatibility_object = Compatibility(inventory_data)
+    cart_object = Cart(user_object, inventory_data)
+    build_object = Build(user_object, cart_object, inventory_data)
     
     while True:
         display_menu(user_object.get_name(), user_object.get_budget())
@@ -66,23 +65,27 @@ def main_menu(inventory_file_data):
 
         # Dictionary of available command options
         menu_dict: dict = {
-            "1": inventory_object.list_parts,
-            "list": inventory_object.list_parts,
+            "1": lambda: list_parts(inventory_data),
+            "list": lambda: list_parts(inventory_data),
             
-            "2": inventory_object.get_details,
-            "detail": inventory_object.get_details,
+            "2": lambda: get_details(inventory_data),
+            "detail": lambda: get_details(inventory_data),
             
-            "3": compatibility_object.compatibility_check,
-            "compatibility": compatibility_object.compatibility_check,
+            #"3": compatibility_object.compatibility_check,
+            #"compatibility": compatibility_object.compatibility_check,
 
-            "6": cart_object.remove_item,
-            "remove": cart_object.remove_item,
+            "4": build_object.build_menu,
+            "build": build_object.build_menu,
 
-            "8": cart_object.cart_menu,
+            "5": cart_object.cart_menu,
             "cart": cart_object.cart_menu,
 
-            "10": user_object.update_budget,
+            "6": user_object.update_budget,
             "budget": user_object.update_budget,
+
+            "7": user_object.update_name,
+            "user": user_object.update_name,
+            "username": user_object.update_name,
 
             "11": help_option,
             "help": help_option,
