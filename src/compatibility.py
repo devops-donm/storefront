@@ -3,96 +3,119 @@ from src.utils import clear_screen
 class Compatibility:
     def __init__(self, inventory_object):
         self.inventory_object = inventory_object
-    
+        self.total_power_consuption: int = 0
+
+    def update_power_draw(self, item_type, wattage):
+        if item_type != "PSU":
+            wattage = wattage * -1
+        
+        self.total_power_consuption = self.total_power_consuption + wattage
+
+    def check_ids(self, item_id_list):
+        # Creating a parts dict with item objects for organization for later.
+        part_dict = {
+            "CPU": [],
+            "GPU": [],
+            "RAM": [],
+            "PSU": [],
+            "Motherboard": [],
+            "Storage": []
+        }
+
+        # Check that each user provided item id exists within the inventory data.
+        id_list = []
+
+        # Creating a list of IDs to validate the user's input before processing.
+        for item in self.inventory_object.items:
+            id_list.append(item.id)
+
+        # validating user input and adding valid items to the dict.
+        for individual_item in item_id_list:
+            if individual_item.upper() in id_list:
+                for item in self.inventory_object.items:
+                    if item.id.lower() == individual_item.lower():
+                        part_dict[item.type].append(item)
+
+                        # Update Power Draw / Supply variable
+                        if item.type != "PSU":
+                            self.update_power_draw(item.type, item.power_draw)
+                        else:
+                            self.update_power_draw(item.type, item.power_supplied)
+            else:
+                # Ending the validation process and returning None if the user provides
+                # an invalid part id.
+                return None
+        
+        # return the completed dict.
+        return part_dict
+
+    def motherboard_cpu_validation(self, motherboard, cpu):
+        if motherboard.socket != cpu.socket:
+            print(f"{cpu.name} ({cpu.id}) is not compatible with {motherboard.name} ({motherboard.id})")
+        else:
+            print(f"{cpu.name} ({cpu.id}) is compatible with {motherboard.name} ({motherboard.id})")
+
+    def ram_id_validation(self, ram_list):
+        if len(ram_list) == 1:
+            print(f"All motherboards are compatible when only given 1 RAM.")
+        else:
+            first_ram_id = ram_list[0].id
+            for ram_object in ram_list[1:]:
+                if ram_object.id != first_ram_id:
+                    print("RAM ID's Do Not Match. All motherboards require matching RAM.")
+                    break
+            print("RAM Matches")
+
+    def motherboard_ram_slot_validation(self, motherboard, ram_list):
+        motherboard_ram_slots = int(motherboard.ram_slots)
+        ram_list_len = len(ram_list)
+
+        if ram_list_len <= motherboard_ram_slots:
+            print("Motherboard is able to support the total number of RAM listed.")
+        else:
+            print("The total amount of RAM listed is greater than the number of slots on the motherboard.")
+
+    def power_draw_check(self):
+        if self.total_power_consuption > 0:
+            print("The powerdraw for these parts is within the PSU's available capacity.")
+        elif self.total_power_consuption < 0:
+            print("The powerdraw for these parts exceeds the PSU. You will need to upgrade it.")
+        else:
+            print("The powerdraw for these parts is at max capacity. Consider upgrading the PSU.")
+
     def compatibility_check(self):
         print("What part(s) do you want to perform a compatibility check on?")
         print("Provide part IDs only and separate using commas.")
         print("Example: part_id01, part_id02,...")
         user_input = input("\nItem IDs: ")
 
-        #TODO: clean the list of item_ids
+        # Clean the list of item_ids
         item_id_list = [item_id.strip() for item_id in user_input.split(',')]
 
-        #TODO: validate there is more than one item_id
+        # Validate there is more than one item_id in the list
         if len(item_id_list) <= 1:
-            print("""The compatibility check requires two or more parts.\n
-                  Unable to complete this request.""")
-            return
-
-        # This is here to keep it out of the way. Please don't move it. Thanks!
-        part_dict = {
-            "cpu": [],
-            "gpu": [],
-            "ram": [],
-            "psu": [],
-            "motherboard": [],
-            "storage": []
-        }
-        total_power_consuption: int = 0
-
-        # Check that each user provided item id exists within the inventory data.
-        for item_id in item_id_list:
-            id_check = self.inventory_object.get_details(part_id=item_id)
-            
-            if id_check is None:
-                print("id_check failed")
-            else:
-                # Organize each item by type or organization sake.
-                item_key = id_check["item"]
-                item_type = item_key["type"].lower()
-                
-                if item_type != 'psu':
-                    total_power_consuption = total_power_consuption + int(item_key["power_draw"])
-
-                if item_type in part_dict:
-                    part_dict[item_type].append(item_key)
-                else:
-                    print(f"Unknown item type: {item_type}")
+            clear_screen()
+            print("""The compatibility check requires two or more parts.\nUnable to complete this request.""")
+            return None
         
-        # Perform a compatibility check again MOTHERBOARD and CPU sockets.
-        # Check if there is at least one motherboard and cpu
+        valid_id_dict = self.check_ids(item_id_list)
+
         clear_screen()
-        print(f"Listed Items: {item_id_list}\n")
-        if part_dict["motherboard"] and part_dict["cpu"]:
-            # Handle the event where there are multiple motherboards to check
-            for motherboards in part_dict["motherboard"]:
-                # Check compatibility for each CPU if multiple against each motherboard.
-                for cpus in part_dict["cpu"]:
-                    if motherboards["socket"] != cpus["socket"]:
-                        print(f"\n- Motherboard ({motherboards['id']}) and CPU ({cpus['id']}) are not compatible due to different socket types.")
-                    else:
-                        print(f"\n- Motherboard ({motherboards['id']}) and CPU ({cpus['id']}) are compatible.")
-            
-        #TODO: 2. Perform check to verify that RAM IDs are the same when placed with a motherboard
-        if part_dict["ram"] and part_dict["motherboard"] and len(part_dict["ram"]) == 1:
-            print(f"\n- All motherboards are compatible when only given 1 RAM.")
+        print(f"Power Draw: {self.total_power_consuption}W")
+        print(f"Listed Items: {user_input}")
 
-        if part_dict["ram"] and part_dict["motherboard"] and len(part_dict["ram"]) >= 2:
-            # Handle the event where the RAM IDs are not the same.
-            first_ram_id = part_dict["ram"][0]["id"]
-            for ram in part_dict["ram"][1:]:
-                if ram["id"] != first_ram_id:
-                    print(f"\n- {first_ram_id} and {ram['id']} do not match. All motherboards require matching RAM.")
-                
-                    
-            # Handle the event where there are multiple motherboards to check
-            for motherboard in part_dict["motherboard"]:
-                available_ram_slots = motherboard['ram_slots']
-                if len(part_dict["ram"]) > available_ram_slots:
-                    print(f'\n- Motherboard ({motherboard}) can\'t support all the ({part_dict["ram"]}) RAM you provided.')
-                else:
-                    print(f'\n- Motherboard ({motherboard['id']}) can support the total number of RAM provided.')
+        # Run through each check for each motherboard in the list.
+        if valid_id_dict["Motherboard"]:
+            for motherboard in valid_id_dict["Motherboard"]:
+                # Loop through each item in the "CPU" list.
+                if valid_id_dict["CPU"]:
+                    for cpu in valid_id_dict["CPU"]:
+                        self.motherboard_cpu_validation(motherboard, cpu)
+                if valid_id_dict["RAM"]:
+                    self.motherboard_ram_slot_validation(motherboard, valid_id_dict["RAM"])
         
-        #TODO: 4. Perform a powerdraw check. If more than one PSD is provided just give an error for that check
-        if part_dict["psu"]:
-            if len(part_dict["psu"]) >= 2:
-                print("""\n- This compatibility checker only supports 1 instance of a PSU.
-                    Please remove additional units and try again.""")
-            else:
-                available_power_draw = part_dict["psu"][0]["power_supplied"]
-                if available_power_draw < total_power_consuption:
-                    print(f"""\n- Based on the items you input you will max out the PDU's total power supply.
-                        {available_power_draw}/{total_power_consuption}\n""")
-                else:
-                    print("\n- The provided PDU can support the total power draw of all the listed items.")            
+        if valid_id_dict["RAM"]:
+            self.ram_id_validation(valid_id_dict["RAM"])
         
+        if valid_id_dict["PSU"]:
+            self.power_draw_check()

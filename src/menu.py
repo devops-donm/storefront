@@ -40,7 +40,7 @@ def display_menu(user_name, budget):
     print("--------------------------------------------------------------------------")
     print("1.  list")
     print("2.  details")
-    #print("3.  compatibility")
+    print("3.  compatibility")
     print("4.  build")
     print("5.  cart")
     print("6.  change budget")
@@ -50,12 +50,13 @@ def display_menu(user_name, budget):
 
 def main_menu(inventory_data):
 
+    #TODO: Move this initial logic over to storefront.py and add to function arg.
     user_object = User()
     user_object.update_name()
     user_object.update_budget()
     clear_screen()
 
-    #compatibility_object = Compatibility(inventory_data)
+    compatibility_object = Compatibility(inventory_data)
     cart_object = Cart(user_object, inventory_data)
     build_object = Build(user_object, cart_object, inventory_data)
     
@@ -71,8 +72,8 @@ def main_menu(inventory_data):
             "2": lambda: get_details(inventory_data),
             "detail": lambda: get_details(inventory_data),
             
-            #"3": compatibility_object.compatibility_check,
-            #"compatibility": compatibility_object.compatibility_check,
+            "3": compatibility_object.compatibility_check,
+            "compatibility": compatibility_object.compatibility_check,
 
             "4": build_object.build_menu,
             "build": build_object.build_menu,
