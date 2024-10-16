@@ -1,10 +1,11 @@
 from src.utils import clear_screen
 
 class Build:
-    def __init__(self, user_object, cart_object, inventory_object):
+    def __init__(self, user_object, cart_object, inventory_object, compatibility_object):
         self.user_object = user_object
         self.cart_object = cart_object
         self.inventory_object = inventory_object
+        self.compatibility_object = compatibility_object
 
         self.total_cost: int = 0
         self.total_power_draw: int = 0
@@ -115,10 +116,11 @@ class Build:
         print("--------------------------------------------------------------------------")
         print("1. add item")
         print("2. remove item")
-        print("3. clear build")
-        print("4. add build to cart")
-        print("5. main menu")
+        print("3. check compatibility")
+        print("4. clear build")
+        print("5. add build to cart")
         print("--------------------------------------------------------------------------")
+        print("m: Main Menu")
 
     def build_menu(self):
         clear_screen()
@@ -129,15 +131,16 @@ class Build:
             user_input = input("\nSelect an option: ").strip().lower()
 
             # Break the while loop and return to the main menu
-            if user_input == "5" or user_input == 'm' or user_input == 'main_menu':
+            if user_input == "m" or user_input == 'M' or user_input == 'main_menu':
                 clear_screen()
                 break
 
             menu_dict: dict = {
                 "1": self.add_item,
                 "2": self.remove_item,
-                "3": self.clear_build,
-                "4": self.add_to_cart
+                "3": lambda: self.compatibility_object.build_check(self.build, self.total_power_draw),
+                "4": self.clear_build,
+                "5": self.add_to_cart
             }
             run_option = menu_dict.get(user_input, self.default)
             run_option()

@@ -58,7 +58,7 @@ def main_menu(inventory_data):
 
     compatibility_object = Compatibility(inventory_data)
     cart_object = Cart(user_object, inventory_data)
-    build_object = Build(user_object, cart_object, inventory_data)
+    build_object = Build(user_object, cart_object, inventory_data, compatibility_object)
     
     while True:
         display_menu(user_object.get_name(), user_object.get_budget())
