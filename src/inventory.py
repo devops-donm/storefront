@@ -156,10 +156,14 @@ def get_details(inventory_data, part_id=None):
             if item.id.lower() == user_input.lower():
                 #for attr, value in vars(item).items():
                 part_details = item
+            
+        for attr, value in vars(part_details).items():
+            print(f"{attr}: {value}")
         
     else:
         #TODO: If part_id is provided, directly find the part.
-        pass
-    
-    for attr, value in vars(part_details).items():
-        print(f"{attr}: {value}")
+        for item in inventory_data.items:
+            if item.id.lower() == part_id.lower():
+                return item
+            else:
+                return None
