@@ -165,6 +165,7 @@ def get_details(inventory_data, part_id=None):
     part_details = None
     
     if part_id is None:
+        clear_screen()
         print("\nBy the Part ID what part would you like the details for? ")
         print("'m' for Main Menu")
         user_input = input("Option: ").lower()

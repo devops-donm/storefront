@@ -84,6 +84,7 @@ class Compatibility:
             print("The powerdraw for these parts is at max capacity. Consider upgrading the PSU.")
 
     def compatibility_check(self):
+        clear_screen()
         print("What part(s) do you want to perform a compatibility check on?")
         print("Provide part IDs only and separate using commas.")
         print("Example: part_id01, part_id02,...")
