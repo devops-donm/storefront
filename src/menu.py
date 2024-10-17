@@ -44,7 +44,7 @@ def display_menu(user_name, budget):
     print("4.  build")
     print("5.  cart")
     print("6.  change budget")
-    print("7.  change username")
+    print("7.  change name")
     print("--------------------------------------------------------------------------")
     print("11. Help    12. Exit")
 
