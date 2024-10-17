@@ -1,3 +1,4 @@
+import sys
 from src.utils import clear_screen
 
 class Cart:
@@ -11,6 +12,25 @@ class Cart:
     
     def default(self):
         print("Not a valid option, please try again.")
+    
+    def checkout(self):
+        if self.user_object.get_budget() < self.total_cost:
+            clear_screen()
+            print("You don't have enough funds to purchse all of the items in your cart.")
+            print("Please update your budget or remove items from the shopping cart.\n")
+            return
+
+        clear_screen()
+        print("Are you sure you wish to make this purchase today?")
+        user_input = input("Yes(y) / No(n): ")
+
+        if user_input.lower() == "yes" or user_input == "y":
+            clear_screen()
+            print("Your purchase has been made. Thank you for choosing us for your PC needs!")
+            sys.exit(0)
+        else:
+            return
+
     
     def add_item(self, part_id=None):
         clear_screen()
@@ -63,9 +83,10 @@ class Cart:
         print("--------------------------------------------------------------------------")
         print(f"Total Cost: ${self.total_cost}.00")
         print("--------------------------------------------------------------------------")
-        print("1. add item")
+        print("1. purchase item")
         print("2. remove item")
         print("3. clear cart")
+        print("4. checkout")
         print("--------------------------------------------------------------------------")
         print("m. main menu")
 
@@ -88,7 +109,8 @@ class Cart:
             menu_dict: dict = {
                 "1": self.add_item,
                 "2": self.remove_item,
-                "3": self.clear_cart
+                "3": self.clear_cart,
+                "4": self.checkout
             }
             run_option = menu_dict.get(user_input, self.default)
             run_option()
