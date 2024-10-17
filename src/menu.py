@@ -36,7 +36,7 @@ def exit_program():
 def display_menu(user_name, budget):
     print("--------------------------------------------------------------------------")
     print(f"Name:   {user_name}")
-    print(f"Budget: ${budget}.00")
+    print(f"Budget: ${budget:,}.00")
     print("--------------------------------------------------------------------------")
     print("1.  list")
     print("2.  details")

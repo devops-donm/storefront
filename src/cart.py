@@ -59,9 +59,9 @@ class Cart:
     def cart_display(self):
         print("--------------------------------------------------------------------------")
         print(f"Name:   {self.user_object.get_name()}")
-        print(f"Budget: ${self.user_object.get_budget()}.00")
+        print(f"Budget: ${self.user_object.get_budget():,}.00")
         print("--------------------------------------------------------------------------")
-        print(f"Total Cost: ${self.total_cost}.00")
+        print(f"Total Cost: ${self.total_cost:,}.00")
         print("--------------------------------------------------------------------------")
         print("1. add item")
         print("2. remove item")
