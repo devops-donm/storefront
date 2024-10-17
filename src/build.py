@@ -21,14 +21,17 @@ class Build:
     def default(self):
         print("Not a valid option, please try again.")
 
-    def update_cost(self, amount):
-        self.total_cost = self.total_cost + int(amount)
+    def increase_total_cost(self, amount):
+        self.total_cost += amount
+    
+    def decrease_total_cost(self, amount):
+        self.total_cost -= amount
 
-    def update_power_draw(self, item_type, wattage):
-        if item_type != "PSU":
-            wattage = wattage * -1
-        
-        self.total_power_draw = self.total_power_draw + wattage
+    def increase_available_power(self, wattage):
+        self.total_power_draw += wattage
+
+    def decreate_available_power(self, wattage):
+        self.total_power_draw -= wattage
 
     def add_item(self, part_id=None):
         clear_screen()
@@ -44,12 +47,12 @@ class Build:
                     else:
                         self.build[item.type] = item
                     
-                    self.update_cost(item.price)
+                    self.increase_total_cost(item.price)
                     
                     if item.type != "PSU":
-                        self.update_power_draw(item.type, item.power_draw)
+                        self.decreate_available_power(item.power_draw)
                     else:
-                        self.update_power_draw(item.type, item.power_supplied)
+                        self.increase_available_power(item.power_supplied)
         else:
             #TODO: If part_id is provided, directly find the part.
             pass
@@ -64,6 +67,8 @@ class Build:
                 if item.type.lower() == "ram" or item.type.lower() == "storage":
                     if len(self.build[item.type]) <= 1:
                         self.build[item.type] = []
+                        self.decrease_total_cost(item.price)
+                        break
                     else:
                         print(f"What is the {item.type} ID?")
                         user_input = input(f"{item.type} ID: ")
@@ -71,9 +76,15 @@ class Build:
                         for value in self.build[item.type]:
                             if value.id.lower() == user_input.lower():
                                 self.build[item.type].remove(value)
+                                self.decrease_total_cost(item.price)
                                 break
+
+                self.decrease_total_cost(item.price)
+                if item.type != "PSU":
+                    self.increase_available_power(item.power_draw)
                 else:
-                    self.build[item.type] = None
+                    self.decreate_available_power(item.power_supplied)
+                self.build[item.type] = None
 
     def clear_build(self):
         clear_screen()
@@ -94,7 +105,7 @@ class Build:
             self.default()
 
     def add_to_cart(self):
-        self.cart_object.add_build(self.build)
+        self.cart_object.add_build(self.build, self.total_cost)
 
     def display_build_list(self):
         #TODO: This will need to be cleaned up later.
@@ -111,7 +122,7 @@ class Build:
         print(f"Name:   {self.user_object.get_name()}")
         print(f"Budget: ${self.user_object.get_budget()}.00")
         print("--------------------------------------------------------------------------")
-        print(f"Total Cost: ${self.total_cost}")
+        print(f"Total Cost: ${self.total_cost}.00")
         print(f"Power Draw: {self.total_power_draw}W")
         print("--------------------------------------------------------------------------")
         print("1. add item")
