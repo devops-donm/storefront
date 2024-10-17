@@ -1,3 +1,5 @@
+from src.utils import clear_screen
+
 class User:
     def __init__(self):
         self.user_name = None
@@ -10,6 +12,7 @@ class User:
         return self.budget
 
     def update_name(self, max_length=50):
+        clear_screen()
         while True:
             name = input("What is your name? ")
             if  len(name) <= max_length:
@@ -20,6 +23,7 @@ class User:
                 print("Please try again.")
 
     def update_budget(self):
+        clear_screen()
         try:
             budget = int(input("What is your budget? "))
             if budget <= 0:

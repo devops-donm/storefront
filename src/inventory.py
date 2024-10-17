@@ -127,6 +127,7 @@ def list_parts(inventory_data):
     """
     Fuction to list parts from inventory based on user-specified category.
     """
+    clear_screen()
     print_categories()
     print("\nFrom the provided categories what would you like to list? ")
     user_input = input("Option: ").lower()
