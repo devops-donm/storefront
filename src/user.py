@@ -17,8 +17,10 @@ class User:
             name = input("What is your name? ")
             if  len(name) <= max_length:
                 self.user_name = name
+                clear_screen()
                 break
             else:
+                clear_screen()
                 print(f"The name you entered exceeds the max length ({max_length}).")
                 print("Please try again.")
 
