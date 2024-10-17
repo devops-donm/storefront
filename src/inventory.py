@@ -196,7 +196,7 @@ def get_details(inventory_data, part_id=None):
         
         print(f"{part_name} ({part_id.lower()})")
         print(f"\tType: {part_type}")
-        print(f"\tPrice: ${part_price:,}..")
+        print(f"\tPrice: ${part_price:,}.00")
         print(f"\tPower: {part_power}W")
         
         for other_attr_data in other_attr:
