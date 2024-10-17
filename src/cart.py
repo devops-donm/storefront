@@ -11,6 +11,7 @@ class Cart:
         self.cart = {}
     
     def default(self):
+        clear_screen()
         print("Not a valid option, please try again.")
     
     def checkout(self):
@@ -77,11 +78,42 @@ class Cart:
             pass
     
     def cart_display(self):
+        if not self.cart:
+            print("Your cart is currently empty.")
+        else:
+            for item_key, item_object in self.cart.items():
+                if item_key == "BUILD":
+                    print("Custom PC Build")
+                    print(f"    Motherboard:\n         {item_object["Motherboard"].name} ({item_object["Motherboard"].id.lower()}) - ${item_object["Motherboard"].price:,}.00")
+                    print(f"    CPU:\n         {item_object["CPU"].name} ({item_object["CPU"].id.lower()}) - ${item_object["CPU"].price:,}.00")
+                    
+                    if item_object["GPU"]:
+                        print(f"    GPU:\n         {item_object["GPU"].name} ({item_object["GPU"].id.lower()}) - ${item_object["GPU"].price:,}.00")
+                    print(f"    PSU:\n         {item_object["PSU"].name} ({item_object["PSU"].id.lower()}) - ${item_object["PSU"].price:,}.00")
+                    
+                    if item_object["RAM"]:
+                        if len(item_object["RAM"]) == 1:
+                            print(f"    RAM:\n         {item_object["RAM"][0].name} ({item_object["RAM"][0].id.lower()}) - ${item_object["RAM"][0].price:,}.00")
+                        else:
+                            print("    RAM:")
+                            for dimm in item_object["RAM"]:
+                                print(f"         {dimm.name} ({dimm.id.lower()}) - ${dimm.price:,}.00")
+                    
+                    if item_object["Storage"]:
+                        if len(item_object["Storage"]) == 1:
+                            print(f"    Storage:\n         {item_object["Storage"][0].name} ({item_object["Storage"][0].id.lower()}) - ${item_object["Storage"][0].price:,}.00")
+                        else:
+                            print("    Storage:")
+                            for drive in item_object["Storage"]:
+                                print(f"         {drive.name} ({drive.id.lower()}) - ${drive.price:,}.00")
+                    print("")
+                else:
+                    print(f"{item_object.name} ({item_object.id.lower()}) - ${item_object.price:,}.00")
         print("--------------------------------------------------------------------------")
         print(f"Name:   {self.user_object.get_name()}")
-        print(f"Budget: ${self.user_object.get_budget()}.00")
+        print(f"Budget: ${self.user_object.get_budget():,}.00")
         print("--------------------------------------------------------------------------")
-        print(f"Total Cost: ${self.total_cost}.00")
+        print(f"Total Cost: ${self.total_cost:,}.00")
         print("--------------------------------------------------------------------------")
         print("1. purchase item")
         print("2. remove item")
@@ -93,11 +125,6 @@ class Cart:
     def cart_menu(self):
         clear_screen()
         while True:
-            if not self.cart:
-                print("Your cart is currently empty.\n")
-            else:
-                print(self.cart)
-            
             self.cart_display()
             user_input = input("\nSelect an option: ").strip().lower()
 

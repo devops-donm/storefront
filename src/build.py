@@ -42,8 +42,10 @@ class Build:
         
             for item in self.inventory_object.items:
                 if item.id.lower() == part_id.lower():
-                    if item.type.lower() == "ram" or item.type.lower() == "storage":
-                        self.build[item.type].append(item)
+                    if item.type.lower() == "ram": 
+                        self.build["RAM"].append(item)
+                    elif item.type.lower() == "storage":
+                        self.build["Storage"].append(item)
                     else:
                         self.build[item.type] = item
                     
@@ -105,17 +107,36 @@ class Build:
             self.default()
 
     def add_to_cart(self):
-        self.cart_object.add_build(self.build, self.total_cost)
+        compatibility_test = self.compatibility_object.build_check(self.build, self.total_power_draw)
+        if compatibility_test:
+            self.cart_object.add_build(self.build, self.total_cost)
+            clear_screen()
+            print("Build has been added to the shopping cart!")
+        else:
+            clear_screen()
+            print("Build is not compatible. See Build - Compatibility Check for more information.")
 
     def display_build_list(self):
         #TODO: This will need to be cleaned up later.
-        for item, data in self.build.items():
-            if not data:
-                print(f"{item}: None")
+        for item_key, item_object in self.build.items():
+            if not item_object:
+                print(f"{item_key.upper()}: None")
+
             else:
-                #TODO: Need to make this look better. UX/UI only shows object data
-                # do to RAM and Storage lists.
-                print(f"{item}: {data}")
+                if item_key == "RAM":
+                    print("RAM:")
+                    for dimm in item_object:
+                        print(f"    {dimm.name} ({dimm.id.lower()}) - ${dimm.price:,}.00")
+                
+                elif item_key == "Storage":
+                    print("Storage:")
+                    for drive in item_object:
+                        print(f"    {drive.name} ({drive.id.lower()}) - ${drive.price:,}.00")
+
+                else:
+                    print(f"{item_key.upper()}:")
+                    print(f"    {item_object.name} ({item_object.id.lower()}) - ${item_object.price:,}.00")
+
 
     def build_display(self):
         print("--------------------------------------------------------------------------")

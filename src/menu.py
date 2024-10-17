@@ -36,7 +36,7 @@ def exit_program():
 def display_menu(user_name, budget):
     print("--------------------------------------------------------------------------")
     print(f"Name:   {user_name}")
-    print(f"Budget: ${budget}.00")
+    print(f"Budget: ${budget:,}.00")
     print("--------------------------------------------------------------------------")
     print("1.  list")
     print("2.  details")
@@ -44,7 +44,7 @@ def display_menu(user_name, budget):
     print("4.  build")
     print("5.  cart")
     print("6.  change budget")
-    print("7.  change username")
+    print("7.  change name")
     print("--------------------------------------------------------------------------")
     print("11. Help    12. Exit")
 
@@ -97,6 +97,5 @@ def main_menu(inventory_data):
             "e": exit_program,
         }
 
-        clear_screen()
         run_option = menu_dict.get(user_input, default)
         run_option()

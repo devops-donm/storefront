@@ -84,6 +84,7 @@ class Compatibility:
             print("The powerdraw for these parts is at max capacity. Consider upgrading the PSU.")
 
     def compatibility_check(self):
+        clear_screen()
         print("What part(s) do you want to perform a compatibility check on?")
         print("Provide part IDs only and separate using commas.")
         print("Example: part_id01, part_id02,...")
@@ -125,38 +126,41 @@ class Compatibility:
         #TODO: validate that a motherboard exists
         if not build_object["Motherboard"]:
             print("A valid build requires a single motherboard. Please select one for your build.")
-            return None
+            return False
 
         #TODO: validate that a ram exists
         if not build_object["RAM"]:
             print("A valid build requires RAM. Please add to your build.")
             print("Keep in mind that your Motherboard has a limited number of RAM slots.")
-            return None
+            return False
         
         #TODO: validate that a cpu exists
-        if not build_object["CPU"]:
+        elif not build_object["CPU"]:
             print("A valid build requires a CPU. Please select one for your build.")
             print("Please note that your Motherboard socket and CPU socket need to match.")
-            return None
+            return False
         
         #TODO: validate that storage exists
-        if not build_object["Storage"]:
+        elif not build_object["Storage"]:
             print("A valid build requires Storage. Please select one for your build.")
-            return None
+            return False
 
         #TODO: validate that a psu exists
-        if not build_object["PSU"]:
-            print("A valid build requires Storage. Please select one for your build.")
-
-        #TODO: validate motherboard and cpu are compatible
-        self.motherboard_cpu_validation(build_object["Motherboard"], build_object["CPU"])
+        elif not build_object["PSU"]:
+            print("A valid build requires a Power Supply (PSU). Please select one for your build.")
+            return False
         
-        #TODO: validate that motherboard ram slots <= total number of ram
-        self.motherboard_ram_slot_validation(build_object["Motherboard"], build_object["RAM"])
+        else:
+             #TODO: validate motherboard and cpu are compatible
+            self.motherboard_cpu_validation(build_object["Motherboard"], build_object["CPU"])
+            
+            #TODO: validate that motherboard ram slots <= total number of ram
+            self.motherboard_ram_slot_validation(build_object["Motherboard"], build_object["RAM"])
 
-        #TODO: validate that ram types are the same if 2>
-        self.ram_id_validation(build_object["RAM"])
+            #TODO: validate that ram types are the same if 2>
+            self.ram_id_validation(build_object["RAM"])
 
-        #TODO: validate that the PSU can support the power draw
-        self.power_draw_check()
-        print("")
+            #TODO: validate that the PSU can support the power draw
+            self.power_draw_check()
+            print("")
+            return True

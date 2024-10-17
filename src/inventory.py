@@ -2,7 +2,7 @@ from src.utils import clear_screen
 from typing import List, Union
 
 class Item:
-    def __init__(self, id: str, type: str, name: str, price: float, power_draw: float = 0):
+    def __init__(self, id: str, type: str, name: str, price: int, power_draw: int = 0):
         self.id = id
         self.type = type
         self.name = name
@@ -13,33 +13,33 @@ class Item:
         return f"{self.name} ({self.type}) - ${self.price}"
 
 class CPU(Item):
-    def __init__(self, id: str, name: str, price: float, power_draw: float, socket: str):
+    def __init__(self, id: str, name: str, price: int, power_draw: float, socket: str):
         super().__init__(id, "CPU", name, price, power_draw)
         self.socket = socket
 
 class GPU(Item):
-    def __init__(self, id: str, name: str, price: float, power_draw: float, overclockable: bool):
+    def __init__(self, id: str, name: str, price: int, power_draw: float, overclockable: bool):
         super().__init__(id, "GPU", name, price, power_draw)
         self.overclockable = overclockable
 
 class RAM(Item):
-    def __init__(self, id: str, name: str, price: float, power_draw: float, capacity: int):
+    def __init__(self, id: str, name: str, price: int, power_draw: float, capacity: int):
         super().__init__(id, "RAM", name, price, power_draw)
         self.capactiy = capacity
 
 class PSU(Item):
-    def __init__(self, id: str, name: str, price: float, power_supplied: float):
+    def __init__(self, id: str, name: str, price: int, power_supplied: float):
         super().__init__(id, "PSU", name, price)
         self.power_supplied = power_supplied
 
 class Motherboard(Item):
-    def __init__(self, id: str, name: str, price: float, power_draw: float, socket: str, ram_slots: int):
+    def __init__(self, id: str, name: str, price: int, power_draw: float, socket: str, ram_slots: int):
         super().__init__(id, "Motherboard", name, price, power_draw)
         self.socket = socket
         self.ram_slots = ram_slots
 
 class Storage(Item):
-    def __init__(self, id: str, name: str, price: float, capacity: int):
+    def __init__(self, id: str, name: str, price: int, capacity: int):
         super().__init__(id, "Storage", name, price)
         self.capacity = capacity
 
@@ -123,27 +123,49 @@ def print_categories():
     for category in available_category_options:
         print(category)
 
+def parts_dict(inventory_data):
+    parts_dict = {
+            "cpu": [],
+            "gpu": [],
+            "ram": [],
+            "psu": [],
+            "motherboard": [],
+            "storage": []
+        }
+    
+    for item in inventory_data.items:
+        parts_dict[item.type.lower()].append(item)
+    return parts_dict
+
 def list_parts(inventory_data):
     """
     Fuction to list parts from inventory based on user-specified category.
     """
+    clear_screen()
+    parts_dictionary = parts_dict(inventory_data)
     print_categories()
     print("\nFrom the provided categories what would you like to list? ")
     user_input = input("Option: ").lower()
 
     if user_input == 'all':
         clear_screen()
-        for item in inventory_data.items:
-            print(item)
-    else:
-        for item in inventory_data.items:
-            if item.type.lower() == user_input.lower():
-                print(item)
+        for part_key in parts_dictionary:
+            print(part_key.upper())
+            parts_list = parts_dictionary.get(part_key)
+            for part_item in parts_list:
+                print(f"    {part_item.name} ({part_item.id.lower()})    ${part_item.price:,}.00")
+    elif user_input in parts_dictionary:
+        clear_screen()
+        print(user_input.upper())
+        parts_list = parts_dictionary.get(user_input)
+        for part_item in parts_list:
+            print(f"    {part_item.name} ({part_item.id.lower()})    ${part_item.price:,}.00")
 
 def get_details(inventory_data, part_id=None):
     part_details = None
     
     if part_id is None:
+        clear_screen()
         print("\nBy the Part ID what part would you like the details for? ")
         print("'m' for Main Menu")
         user_input = input("Option: ").lower()
@@ -154,12 +176,34 @@ def get_details(inventory_data, part_id=None):
         
         for item in inventory_data.items:
             if item.id.lower() == user_input.lower():
-                #for attr, value in vars(item).items():
                 part_details = item
-            
-        for attr, value in vars(part_details).items():
-            print(f"{attr}: {value}")
         
+        part_name = part_details.name
+        part_price = part_details.price
+        part_id = part_details.id
+        part_type = part_details.type
+        part_power = None
+        other_attr = []
+        
+        for attr, value in vars(part_details).items():
+            if attr == 'type':
+                if value != "PSU":
+                    part_power = part_details.power_draw
+                else:
+                    part_power = part_details.power_supplied
+            
+            if attr not in ('name', 'price', 'id', 'type', 'power_draw', 'power_supply'):
+                other_attr.append({attr: value})
+        
+        print(f"{part_name} ({part_id.lower()})")
+        print(f"\tType: {part_type}")
+        print(f"\tPrice: ${part_price:,}.00")
+        print(f"\tPower: {part_power}W")
+        
+        for other_attr_data in other_attr:
+            for attr, value in other_attr_data.items():
+                print(f"\t{attr}: {value}")
+
     else:
         #TODO: If part_id is provided, directly find the part.
         for item in inventory_data.items:
