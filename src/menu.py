@@ -61,6 +61,7 @@ def main_menu(inventory_data):
     build_object = Build(user_object, cart_object, inventory_data, compatibility_object)
     
     while True:
+        clear_screen()
         display_menu(user_object.get_name(), user_object.get_budget())
         user_input = input("\nSelect an option: ").strip().lower()
 
@@ -97,6 +98,5 @@ def main_menu(inventory_data):
             "e": exit_program,
         }
 
-        clear_screen()
         run_option = menu_dict.get(user_input, default)
         run_option()
