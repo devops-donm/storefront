@@ -42,8 +42,10 @@ class Build:
         
             for item in self.inventory_object.items:
                 if item.id.lower() == part_id.lower():
-                    if item.type.lower() == "ram" or item.type.lower() == "storage":
-                        self.build[item.type].append(item)
+                    if item.type.lower() == "ram": 
+                        self.build["RAM"].append(item)
+                    elif item.type.lower() == "storage":
+                        self.build["Storage"].append(item)
                     else:
                         self.build[item.type] = item
                     
@@ -105,8 +107,14 @@ class Build:
             self.default()
 
     def add_to_cart(self):
-        self.cart_object.add_build(self.build, self.total_cost)
-        clear_screen()
+        compatibility_test = self.compatibility_object.build_check(self.build, self.total_power_draw)
+        if compatibility_test:
+            self.cart_object.add_build(self.build, self.total_cost)
+            clear_screen()
+            print("Build has been added to the shopping cart!")
+        else:
+            clear_screen()
+            print("Build is not compatible. See Build - Compatibility Check for more information.")
 
     def display_build_list(self):
         #TODO: This will need to be cleaned up later.
