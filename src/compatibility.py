@@ -64,7 +64,8 @@ class Compatibility:
                 if ram_object.id != first_ram_id:
                     print("RAM ID's Do Not Match. All motherboards require matching RAM.")
                     break
-            print("RAM Matches")
+                else:
+                    print("RAM Matches")
 
     def motherboard_ram_slot_validation(self, motherboard, ram_list):
         motherboard_ram_slots = int(motherboard.ram_slots)
@@ -100,26 +101,30 @@ class Compatibility:
             return None
         
         valid_id_dict = self.check_ids(item_id_list)
-
-        clear_screen()
-        print(f"Power Draw: {self.total_power_consuption}W")
-        print(f"Listed Items: {user_input}")
-
-        # Run through each check for each motherboard in the list.
-        if valid_id_dict["Motherboard"]:
-            for motherboard in valid_id_dict["Motherboard"]:
-                # Loop through each item in the "CPU" list.
-                if valid_id_dict["CPU"]:
-                    for cpu in valid_id_dict["CPU"]:
-                        self.motherboard_cpu_validation(motherboard, cpu)
-                if valid_id_dict["RAM"]:
-                    self.motherboard_ram_slot_validation(motherboard, valid_id_dict["RAM"])
         
-        if valid_id_dict["RAM"]:
-            self.ram_id_validation(valid_id_dict["RAM"])
-        
-        if valid_id_dict["PSU"]:
-            self.power_draw_check()
+        try:
+            clear_screen()
+            print(f"Power Draw: {self.total_power_consuption}W")
+            print(f"Listed Items: {user_input}")
+
+            # Run through each check for each motherboard in the list.
+            if valid_id_dict["Motherboard"]:
+                for motherboard in valid_id_dict["Motherboard"]:
+                    # Loop through each item in the "CPU" list.
+                    if valid_id_dict["CPU"]:
+                        for cpu in valid_id_dict["CPU"]:
+                            self.motherboard_cpu_validation(motherboard, cpu)
+                    if valid_id_dict["RAM"]:
+                        self.motherboard_ram_slot_validation(motherboard, valid_id_dict["RAM"])
+                
+            if valid_id_dict["RAM"]:
+                self.ram_id_validation(valid_id_dict["RAM"])
+            
+            if valid_id_dict["PSU"]:
+                self.power_draw_check()
+        except TypeError as e:
+            clear_screen()
+            print("There was an error when attempting to process this request. Please try again.")
     
     def build_check(self, build_object, build_power_draw):
         self.total_power_consuption = build_power_draw

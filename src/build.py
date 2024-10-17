@@ -61,32 +61,33 @@ class Build:
 
     def remove_item(self):
         clear_screen()
-        print("What is the part type or part ID of the item you want to remove?")
-        part = input("Item: ")
+        print("What is the part type of the item you want to remove?")
+        part = input("Part Type: ")
 
         for item in self.inventory_object.items:
-            if item.id.lower() == part.lower() or item.type.lower() == part.lower():
+            if item.type.lower() == part.lower():
                 if item.type.lower() == "ram" or item.type.lower() == "storage":
-                    if len(self.build[item.type]) <= 1:
+                    if len(self.build[item.type]) == 0:
                         self.build[item.type] = []
-                        self.decrease_total_cost(item.price)
-                        break
-                    else:
-                        print(f"What is the {item.type} ID?")
-                        user_input = input(f"{item.type} ID: ")
-                    
-                        for value in self.build[item.type]:
-                            if value.id.lower() == user_input.lower():
-                                self.build[item.type].remove(value)
-                                self.decrease_total_cost(item.price)
+                        clear_screen()
+                        print(f"Nothing in {item.type} to delete.")
+                    elif len(self.build[item.type]) == 1:
+                        self.build[item.type] = []
+                        #TODO: adjust cost / power draw
+                        clear_screen()
+                        print(f"Item has been removed from {item.type}.")
+                    elif len(self.build[item.type]) > 1:
+                        clear_screen()
+                        user_input = input(f"What is the {item.type} Part ID: ")
+                        for ram_object in self.build[item.type]:
+                            if ram_object.id.lower() == user_input.lower():
+                                self.build[item.type].remove(ram_object)
+                                #TODO: adjust cost / power draw
                                 break
-
-                self.decrease_total_cost(item.price)
-                if item.type != "PSU":
-                    self.increase_available_power(item.power_draw)
                 else:
-                    self.decreate_available_power(item.power_supplied)
-                self.build[item.type] = None
+                    self.build[item.type] = None
+                    clear_screen()
+                    print(f"{item.name} ({item.id}) was removed from build.\n")
 
     def clear_build(self):
         clear_screen()
@@ -141,9 +142,9 @@ class Build:
     def build_display(self):
         print("--------------------------------------------------------------------------")
         print(f"Name:   {self.user_object.get_name()}")
-        print(f"Budget: ${self.user_object.get_budget()}.00")
+        print(f"Budget: ${self.user_object.get_budget():,}.00")
         print("--------------------------------------------------------------------------")
-        print(f"Total Cost: ${self.total_cost}.00")
+        print(f"Total Cost: ${self.total_cost:,}.00")
         print(f"Power Draw: {self.total_power_draw}W")
         print("--------------------------------------------------------------------------")
         print("1. add item")
