@@ -2,7 +2,7 @@ from src.utils import clear_screen
 from typing import List, Union
 
 class Item:
-    def __init__(self, id: str, type: str, name: str, price: float, power_draw: float = 0):
+    def __init__(self, id: str, type: str, name: str, price: int, power_draw: int = 0):
         self.id = id
         self.type = type
         self.name = name
@@ -13,33 +13,33 @@ class Item:
         return f"{self.name} ({self.type}) - ${self.price}"
 
 class CPU(Item):
-    def __init__(self, id: str, name: str, price: float, power_draw: float, socket: str):
+    def __init__(self, id: str, name: str, price: int, power_draw: float, socket: str):
         super().__init__(id, "CPU", name, price, power_draw)
         self.socket = socket
 
 class GPU(Item):
-    def __init__(self, id: str, name: str, price: float, power_draw: float, overclockable: bool):
+    def __init__(self, id: str, name: str, price: int, power_draw: float, overclockable: bool):
         super().__init__(id, "GPU", name, price, power_draw)
         self.overclockable = overclockable
 
 class RAM(Item):
-    def __init__(self, id: str, name: str, price: float, power_draw: float, capacity: int):
+    def __init__(self, id: str, name: str, price: int, power_draw: float, capacity: int):
         super().__init__(id, "RAM", name, price, power_draw)
         self.capactiy = capacity
 
 class PSU(Item):
-    def __init__(self, id: str, name: str, price: float, power_supplied: float):
+    def __init__(self, id: str, name: str, price: int, power_supplied: float):
         super().__init__(id, "PSU", name, price)
         self.power_supplied = power_supplied
 
 class Motherboard(Item):
-    def __init__(self, id: str, name: str, price: float, power_draw: float, socket: str, ram_slots: int):
+    def __init__(self, id: str, name: str, price: int, power_draw: float, socket: str, ram_slots: int):
         super().__init__(id, "Motherboard", name, price, power_draw)
         self.socket = socket
         self.ram_slots = ram_slots
 
 class Storage(Item):
-    def __init__(self, id: str, name: str, price: float, capacity: int):
+    def __init__(self, id: str, name: str, price: int, capacity: int):
         super().__init__(id, "Storage", name, price)
         self.capacity = capacity
 
