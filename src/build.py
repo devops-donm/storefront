@@ -106,16 +106,29 @@ class Build:
 
     def add_to_cart(self):
         self.cart_object.add_build(self.build, self.total_cost)
+        clear_screen()
 
     def display_build_list(self):
         #TODO: This will need to be cleaned up later.
-        for item, data in self.build.items():
-            if not data:
-                print(f"{item}: None")
+        for item_key, item_object in self.build.items():
+            if not item_object:
+                print(f"{item_key.upper()}: None")
+
             else:
-                #TODO: Need to make this look better. UX/UI only shows object data
-                # do to RAM and Storage lists.
-                print(f"{item}: {data}")
+                if item_key == "RAM":
+                    print("RAM:")
+                    for dimm in item_object:
+                        print(f"    {dimm.name} ({dimm.id.lower()}) - ${dimm.price:,}.00")
+                
+                elif item_key == "Storage":
+                    print("Storage:")
+                    for drive in item_object:
+                        print(f"    {drive.name} ({drive.id.lower()}) - ${drive.price:,}.00")
+
+                else:
+                    print(f"{item_key.upper()}:")
+                    print(f"    {item_object.name} ({item_object.id.lower()}) - ${item_object.price:,}.00")
+
 
     def build_display(self):
         print("--------------------------------------------------------------------------")
