@@ -9,8 +9,14 @@ class User:
     def get_budget(self):
         return self.budget
 
-    def update_name(self):
-        self.user_name = input("What is your name? ")
+    def update_name(self, max_length=50):
+        while True:
+            name = input("What is your name? ")
+            if  len(name) <= max_length:
+                self.user_name = name
+            else:
+                print(f"The name you entered exceeds the max length ({max_length}).")
+                print("Please try again.")
 
     def update_budget(self):
         try:
