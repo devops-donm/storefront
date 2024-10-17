@@ -128,18 +128,39 @@ def list_parts(inventory_data):
     Fuction to list parts from inventory based on user-specified category.
     """
     clear_screen()
+
+    parts_dict = {
+        "cpu": [],
+        "gpu": [],
+        "ram": [],
+        "psu": [],
+        "motherboard": [],
+        "storage": []
+    }
+
+    for item in inventory_data.items:
+        parts_dict[item.type.lower()].append(item)
+
     print_categories()
     print("\nFrom the provided categories what would you like to list? ")
     user_input = input("Option: ").lower()
 
     if user_input == 'all':
         clear_screen()
-        for item in inventory_data.items:
-            print(item)
-    else:
-        for item in inventory_data.items:
-            if item.type.lower() == user_input.lower():
-                print(item)
+        for part_key in parts_dict:
+            print(part_key.upper())
+            parts_list = parts_dict.get(part_key)
+            for part_item in parts_list:
+                print(f"    {part_item.name} ({part_item.id.lower()})    ${part_item.price:,}.00")
+    elif user_input in parts_dict:
+        clear_screen()
+        print(user_input.upper())
+        parts_list = parts_dict.get(user_input)
+        for part_item in parts_list:
+            print(f"    {part_item.name} ({part_item.id.lower()})    ${part_item.price:,}.00")
+
+
+
 
 def get_details(inventory_data, part_id=None):
     part_details = None
