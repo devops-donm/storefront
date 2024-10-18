@@ -141,9 +141,6 @@ class Build:
                         self.decreate_available_power(item.power_draw)
                     else:
                         self.increase_available_power(item.power_supplied)
-        else:
-            #TODO: If part_id is provided, directly find the part.
-            pass
 
     def remove_item(self):
         """
