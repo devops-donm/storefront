@@ -40,7 +40,7 @@ def main():
         print("Or you can make storefront.py an exicutable and run \
               ./storefront.py inventory.json\n")
         sys.exit(1)
-    
+
     inventory_file = sys.argv[1]
     inventory_data = process_inventory_file(inventory_file)
 
