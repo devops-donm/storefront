@@ -29,13 +29,29 @@ class Compatibility:
         self.total_power_consuption: int = 0
 
     def update_power_draw(self, item_type, wattage):
+        """
+        Updates the total power consumption based on the item type and its wattage.
+        If the item is not a PSU, its power draw is subtracted from the total.
+
+        Args:
+            item_type (str): The type of the item (e.g., CPU, GPU).
+            wattage (int): The power draw or supply of the item in watts.
+        """
         if item_type != "PSU":
             wattage = wattage * -1
 
         self.total_power_consuption = self.total_power_consuption + wattage
 
     def check_ids(self, item_id_list):
-        # Creating a parts dict with item objects for organization for later.
+        """
+        Validates the provided item IDs, matches them with the inventory, and organizes them into categories.
+
+        Args:
+            item_id_list (list): List of item IDs provided by the user.
+
+        Returns:
+            dict: A dictionary with categorized parts (CPU, GPU, RAM, etc.), or None if invalid ID is provided.
+        """
         part_dict = {
             "CPU": [],
             "GPU": [],
@@ -73,6 +89,13 @@ class Compatibility:
         return part_dict
 
     def motherboard_cpu_validation(self, motherboard, cpu):
+        """
+        Validates whether the CPU is compatible with the motherboard based on the socket type.
+
+        Args:
+            motherboard (object): The motherboard object.
+            cpu (object): The CPU object.
+        """
         if motherboard.socket != cpu.socket:
             print(f"{cpu.name} ({cpu.id}) is not compatible with {motherboard.name} "
                   f"({motherboard.id})")
@@ -80,6 +103,12 @@ class Compatibility:
             print(f"{cpu.name} ({cpu.id}) is compatible with {motherboard.name} ({motherboard.id})")
 
     def ram_id_validation(self, ram_list):
+        """
+        Validates whether all provided RAM sticks are identical in terms of ID.
+
+        Args:
+            ram_list (list): List of RAM objects to be validated.
+        """
         if len(ram_list) == 1:
             print(f"All motherboards are compatible when only given 1 RAM.")
         else:
@@ -92,6 +121,13 @@ class Compatibility:
                     print("RAM Matches")
 
     def motherboard_ram_slot_validation(self, motherboard, ram_list):
+        """
+        Validates whether the number of RAM sticks can be supported by the motherboard's available slots.
+
+        Args:
+            motherboard (object): The motherboard object.
+            ram_list (list): List of RAM objects.
+        """
         motherboard_ram_slots = int(motherboard.ram_slots)
         ram_list_len = len(ram_list)
 
@@ -102,6 +138,9 @@ class Compatibility:
                   motherboard.")
 
     def power_draw_check(self):
+        """
+        Checks whether the total power draw is within the PSU's capacity.
+        """
         if self.total_power_consuption > 0:
             print("The powerdraw for these parts is within the PSU's available capacity.")
         elif self.total_power_consuption < 0:
@@ -110,6 +149,10 @@ class Compatibility:
             print("The powerdraw for these parts is at max capacity. Consider upgrading the PSU.")
 
     def compatibility_check(self):
+        """
+        Performs a compatibility check on the selected parts provided by the user.
+        Validates the power draw, CPU-motherboard compatibility, and RAM-motherboard compatibility.
+        """
         clear_screen()
         print("What part(s) do you want to perform a compatibility check on?")
         print("Provide part IDs only and separate using commas.")
@@ -153,6 +196,17 @@ class Compatibility:
             print("There was an error when attempting to process this request. Please try again.")
 
     def build_check(self, build_object, build_power_draw):
+        """
+        Validates whether a complete build is compatible and functional.
+        Ensures that all necessary parts are present, and checks compatibility between the parts.
+
+        Args:
+            build_object (dict): A dictionary containing the build's parts.
+            build_power_draw (int): The total power draw of the build.
+        
+        Returns:
+            bool: True if the build is valid, False otherwise.
+        """
         clear_screen()
         self.total_power_consuption = build_power_draw
         #Validate that a motherboard exists
