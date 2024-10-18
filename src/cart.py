@@ -121,9 +121,10 @@ class Cart:
                 item_price = self.cart[part_id.upper()].price
                 item_name = self.cart[part_id.upper()].name
                 self.total_cost = self.total_cost - int(item_price)
+                print(f"{item_name} was successfully removed from your cart.\n")
             del self.cart[part_id.upper()]
             clear_screen()
-            print(f"{item_name} was successfully removed from your cart.\n")
+            
 
     def clear_cart(self):
         """Clears the entire shopping cart after user confirmation."""
