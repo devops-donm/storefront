@@ -127,6 +127,7 @@ class Compatibility:
             print("There was an error when attempting to process this request. Please try again.")
     
     def build_check(self, build_object, build_power_draw):
+        clear_screen()
         self.total_power_consuption = build_power_draw
         #TODO: validate that a motherboard exists
         if not build_object["Motherboard"]:
