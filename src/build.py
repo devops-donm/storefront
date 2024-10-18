@@ -142,6 +142,40 @@ class Build:
                     else:
                         self.increase_available_power(item.power_supplied)
 
+    def ram_storage_removal(self, item):
+        """
+        Remove a RAM or Storage item from the build.
+
+        This method handles the removal of items from build components that allow 
+        multiple entries, such as RAM or storage. It checks the current quantity of 
+        items and proceeds with one of the following actions:
+        
+        - If no items are present, it displays a message that nothing can be deleted.
+        - If exactly one item is present, it removes that item from the build.
+        - If more than one item is present, the user is prompted to input the 
+        Part ID of the item they wish to remove, and that item is removed.
+
+        Args:
+            item: The item to be removed from the build (either RAM or storage).
+        """
+        if len(self.build[item.type]) == 0:
+            self.build[item.type] = []
+            clear_screen()
+            print(f"Nothing in {item.type} to delete.")
+        elif len(self.build[item.type]) == 1:
+            self.build[item.type] = []
+            #TODO: adjust cost / power draw
+            clear_screen()
+            print(f"Item has been removed from {item.type}.")
+        elif len(self.build[item.type]) > 1:
+            clear_screen()
+            user_input = input(f"What is the {item.type} Part ID: ")
+            for ram_object in self.build[item.type]:
+                if ram_object.id.lower() == user_input.lower():
+                    self.build[item.type].remove(ram_object)
+                    #TODO: adjust cost / power draw
+                    break
+
     def remove_item(self):
         """
         Remove an item from the build based on its part type. Prompts the user to input
@@ -151,7 +185,7 @@ class Build:
         and prompts the user when no items are available to delete.
 
         After removing the item, future steps will need to adjust the total cost and power
-        draw or supplied power (marked as TODO in the code).
+        draw or supplied power.
         """
         clear_screen()
         print("What is the part type of the item you want to remove?")
@@ -160,23 +194,7 @@ class Build:
         for item in self.inventory_object.items:
             if item.type.lower() == part.lower():
                 if item.type.lower() == "ram" or item.type.lower() == "storage":
-                    if len(self.build[item.type]) == 0:
-                        self.build[item.type] = []
-                        clear_screen()
-                        print(f"Nothing in {item.type} to delete.")
-                    elif len(self.build[item.type]) == 1:
-                        self.build[item.type] = []
-                        #TODO: adjust cost / power draw
-                        clear_screen()
-                        print(f"Item has been removed from {item.type}.")
-                    elif len(self.build[item.type]) > 1:
-                        clear_screen()
-                        user_input = input(f"What is the {item.type} Part ID: ")
-                        for ram_object in self.build[item.type]:
-                            if ram_object.id.lower() == user_input.lower():
-                                self.build[item.type].remove(ram_object)
-                                #TODO: adjust cost / power draw
-                                break
+                    self.ram_storage_removal(item)
                 else:
                     self.build[item.type] = None
                     clear_screen()
