@@ -61,10 +61,12 @@ class Cart:
             if part_id.lower() == "build":
                 self.total_cost -= self.build_cost
             else:
-                self.total_cost = self.total_cost - int(self.cart[part_id.upper()].price)
+                item_price = self.cart[part_id.upper()].price
+                item_name = self.cart[part_id.upper()].name
+                self.total_cost = self.total_cost - int(item_price)
             del self.cart[part_id.upper()]
             clear_screen()
-            print(f"{part_id} was successfully removed from your cart. {part_id}")
+            print(f"{item_name} was successfully removed from your cart.\n")
     
     def clear_cart(self):
         clear_screen()
