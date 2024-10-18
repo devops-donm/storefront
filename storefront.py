@@ -29,7 +29,6 @@ Modules imported:
 """
 
 import json
-import os
 import sys
 
 from src.inventory import load_inventory
@@ -55,11 +54,6 @@ def process_inventory_file(inventory_file):
         print("Error: File must be a .json file.")
         sys.exit(1)
 
-    # Check if the file exists
-    if not os.path.isfile(inventory_file):
-        print(f"Error: The file '{inventory_file}' does not exist.")
-        sys.exit(1)
-
     # Load the JSON data
     try:
         with open(inventory_file, 'r') as file:
@@ -69,8 +63,11 @@ def process_inventory_file(inventory_file):
     except json.JSONDecodeError as e:
         print(f"Error: Could not decode JSON.\n{e}")
         sys.exit(1)
-    except Exception as e:
-        print(f"Error: Unable to load the file.\n{e}")
+    except FileNotFoundError as e:
+        print(f"Error: The file {inventory_file} was not found.\n{e}")
+        sys.exit(1)
+    except OSError as e:
+        print(f"Error: There was an issue opening the file.\n{e}")
         sys.exit(1)
 
 def main():
