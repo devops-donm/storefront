@@ -1,5 +1,7 @@
-from src.utils import clear_screen
+
 from typing import List
+
+from src.utils import clear_screen
 
 class Item:
     def __init__(self, id: str, type: str, name: str, price: int, power_draw: int = 0):
@@ -162,9 +164,38 @@ def list_parts(inventory_data):
         for part_item in parts_list:
             print(f"    {part_item.name} ({part_item.id.lower()})    ${part_item.price:,}.00")
 
-def get_details(inventory_data, part_id=None):
-    part_details = None
+def get_part_details(inventory_data, user_input):
+    """Helper function to get part details based on user input."""
+    for item in inventory_data.items:
+        if item.id.lower() == user_input.lower():
+            return item
+    return None
 
+def display_part_details(part_details):
+    """Helper function to display part details."""
+    part_name = part_details.name
+    part_price = part_details.price
+    part_id = part_details.id
+    part_type = part_details.type
+    part_power = None
+    other_attr = []
+
+    for attr, value in vars(part_details).items():
+        if attr == 'type':
+            part_power = part_details.power_draw if value != "PSU" else part_details.power_supplied
+        if attr not in ('name', 'price', 'id', 'type', 'power_draw', 'power_supply'):
+            other_attr.append({attr: value})
+
+    print(f"{part_name} ({part_id.lower()})")
+    print(f"\tType: {part_type}")
+    print(f"\tPrice: ${part_price:,}.00")
+    print(f"\tPower: {part_power}W")
+
+    for other_attr_data in other_attr:
+        for attr, value in other_attr_data.items():
+            print(f"\t{attr}: {value}")
+
+def get_details(inventory_data, part_id=None):
     if part_id is None:
         clear_screen()
         print("\nBy the Part ID what part would you like the details for? ")
@@ -175,38 +206,14 @@ def get_details(inventory_data, part_id=None):
         if user_input == 'm':
             return None
 
-        for item in inventory_data.items:
-            if item.id.lower() == user_input.lower():
-                part_details = item
+        part_details = get_part_details(inventory_data, user_input)
 
-        part_name = part_details.name
-        part_price = part_details.price
-        part_id = part_details.id
-        part_type = part_details.type
-        part_power = None
-        other_attr = []
+        if part_details is None:
+            return None  # No part found, return None
 
-        for attr, value in vars(part_details).items():
-            if attr == 'type':
-                if value != "PSU":
-                    part_power = part_details.power_draw
-                else:
-                    part_power = part_details.power_supplied
+        display_part_details(part_details)
+        return part_details  # Return the part details after displaying them
 
-            if attr not in ('name', 'price', 'id', 'type', 'power_draw', 'power_supply'):
-                other_attr.append({attr: value})
-
-        print(f"{part_name} ({part_id.lower()})")
-        print(f"\tType: {part_type}")
-        print(f"\tPrice: ${part_price:,}.00")
-        print(f"\tPower: {part_power}W")
-
-        for other_attr_data in other_attr:
-            for attr, value in other_attr_data.items():
-                print(f"\t{attr}: {value}")
-
-    else:
-        # If part_id is provided, directly find the part.
-        for item in inventory_data.items:
-            if item.id.lower() == part_id.lower():
-                return item
+    # If part_id is provided, directly find the part.
+    part_details = get_part_details(inventory_data, part_id)
+    return part_details  # Return the part details or None if not found
