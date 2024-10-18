@@ -18,6 +18,12 @@ Functions:
 - display_build_list: Displays the current list of items in the build.
 - build_display: Displays build details and menu options.
 - build_menu: Displays and handles the build menu.
+
+Acknowledged Pylint Standard Errors:
+src\\build.py:23:0: E0401: Unable to import 'src.utils' (import-error)
+src\\build.py:309:31: E1101: Instance of 'list' has no 'name' member (no-member)
+src\\build.py:309:51: E1101: Instance of 'list' has no 'id' member (no-member)
+src\\build.py:310:28: E1101: Instance of 'list' has no 'price' member (no-member)
 """
 
 from src.utils import clear_screen
