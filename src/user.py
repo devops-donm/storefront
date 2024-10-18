@@ -1,6 +1,9 @@
 """
 This module provides a User class for managing user information including name and budget.
 It includes methods for updating and retrieving these attributes.
+
+Acknowledged Pylint Standard Errors:
+src\user.py:5:0: E0401: Unable to import 'src.utils' (import-error)
 """
 from src.utils import clear_screen
 
