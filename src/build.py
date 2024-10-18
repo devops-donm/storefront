@@ -164,17 +164,28 @@ class Build:
             print(f"Nothing in {item.type} to delete.")
         elif len(self.build[item.type]) == 1:
             self.build[item.type] = []
-            #TODO: adjust cost / power draw
+            self.decrease_total_cost(item.price)
+            self.increase_available_power(item.power_draw)
             clear_screen()
-            print(f"Item has been removed from {item.type}.")
         elif len(self.build[item.type]) > 1:
             clear_screen()
             user_input = input(f"What is the {item.type} Part ID: ")
             for ram_object in self.build[item.type]:
                 if ram_object.id.lower() == user_input.lower():
                     self.build[item.type].remove(ram_object)
-                    #TODO: adjust cost / power draw
+                    self.decrease_total_cost(item.price)
+                    self.increase_available_power(item.power_draw)
                     break
+
+    def psu_removal(self, item):
+        """
+        Removes the PSU from the build, updates the total cost, and decreases the available 
+        power capacity.
+        """
+        self.build[item.type] = None
+        self.decrease_total_cost(item.price)
+        self.decreate_available_power(item.power_capacity)
+        clear_screen()
 
     def remove_item(self):
         """
@@ -195,6 +206,10 @@ class Build:
             if item.type.lower() == part.lower():
                 if item.type.lower() == "ram" or item.type.lower() == "storage":
                     self.ram_storage_removal(item)
+                    print(f"Item has been removed from {item.type}.")
+                elif item.type.lower() == "psu":
+                    self.psu_removal(item)
+                    print(f"Item has been removed from {item.type}.")
                 else:
                     self.build[item.type] = None
                     clear_screen()
@@ -269,7 +284,6 @@ class Build:
 
         Note:
             - RAM and Storage are handled separately as they can have multiple items.
-            - The method includes a TODO for future cleanup and refinement.
 
         This method provides a summary of the build in a readable format with proper 
         formatting of the prices (using commas).
