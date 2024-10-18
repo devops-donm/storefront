@@ -56,7 +56,7 @@ def process_inventory_file(inventory_file):
 
     # Load the JSON data
     try:
-        with open(inventory_file, 'r') as file:
+        with open(inventory_file, 'r', encoding='utf-8') as file:
             json_data = json.load(file)
             inventory_data = load_inventory(json_data)
             return inventory_data
