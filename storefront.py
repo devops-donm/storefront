@@ -18,14 +18,6 @@ Functions:
 Usage:
 To run the application:
     python3 storefront.py <inventory_file.json>
-
-Modules imported:
-- sys: Used to handle command-line arguments and system exit.
-- os: Used for file operations, such as checking file existence.
-- json: Used to load and process JSON data.
-- src.utils: Provides utility functions, such as clearing the screen.
-- src.menu: Manages the application's main menu.
-- src.inventory: Handles inventory loading and processing.
 """
 
 import json
