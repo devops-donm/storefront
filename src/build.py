@@ -17,13 +17,13 @@ class Build:
                     "Motherboard": None,
                     "Storage": []
                     }
-    
+
     def default(self):
         print("Not a valid option, please try again.")
 
     def increase_total_cost(self, amount):
         self.total_cost += amount
-    
+
     def decrease_total_cost(self, amount):
         self.total_cost -= amount
 
@@ -39,18 +39,18 @@ class Build:
             print("What is the part ID of the item you want to add?")
             part_id = input("Item ID: ")
             clear_screen()
-        
+
             for item in self.inventory_object.items:
                 if item.id.lower() == part_id.lower():
-                    if item.type.lower() == "ram": 
+                    if item.type.lower() == "ram":
                         self.build["RAM"].append(item)
                     elif item.type.lower() == "storage":
                         self.build["Storage"].append(item)
                     else:
                         self.build[item.type] = item
-                    
+
                     self.increase_total_cost(item.price)
-                    
+
                     if item.type != "PSU":
                         self.decreate_available_power(item.power_draw)
                     else:
@@ -131,7 +131,7 @@ class Build:
                     print("RAM:")
                     for dimm in item_object:
                         print(f"    {dimm.name} ({dimm.id.lower()}) - ${dimm.price:,}.00")
-                
+
                 elif item_key == "Storage":
                     print("Storage:")
                     for drive in item_object:
@@ -162,7 +162,7 @@ class Build:
         clear_screen()
         while True:
             self.display_build_list()
-            
+
             self.build_display()
             user_input = input("\nSelect an option: ").strip().lower()
 
