@@ -34,14 +34,14 @@ class User:
         clear_screen()
         while True:
             name = input("What is your name? ")
-            if  len(name) <= max_length:
-                self.user_name = name
-                clear_screen()
-                break
-            else:
+            if  len(name) >= max_length:
                 clear_screen()
                 print(f"The name you entered exceeds the max length ({max_length}).")
                 print("Please try again.")
+            else:
+                self.user_name = name
+                clear_screen()
+                break
 
     def update_budget(self):
         """
