@@ -15,6 +15,9 @@ Usage:
 Create an instance of `Compatibility` by passing an inventory object. Then use
 methods like `compatibility_check` or `build_check` to perform the validation 
 process.
+
+Acknowledged Pylint Standard Errors:
+src\\compatibility.py:19:0: E0401: Unable to import 'src.utils' (import-error)
 """
 from src.utils import clear_screen
 
@@ -112,15 +115,15 @@ class Compatibility:
             ram_list (list): List of RAM objects to be validated.
         """
         if len(ram_list) == 1:
-            print(f"All motherboards are compatible when only given 1 RAM.")
+            print("All motherboards are compatible when only given 1 RAM.")
         else:
             first_ram_id = ram_list[0].id
             for ram_object in ram_list[1:]:
-                if ram_object.id != first_ram_id:
+                if ram_object.id == first_ram_id:
+                    print("RAM Matches")
+                else:
                     print("RAM ID's Do Not Match. All motherboards require matching RAM.")
                     break
-                else:
-                    print("RAM Matches")
 
     def motherboard_ram_slot_validation(self, motherboard, ram_list):
         """
@@ -170,7 +173,7 @@ class Compatibility:
             clear_screen()
             print("""The compatibility check requires two or more parts.\nUnable to complete this \
                   request.""")
-            return None
+            return
 
         valid_id_dict = self.check_ids(item_id_list)
 
@@ -194,7 +197,7 @@ class Compatibility:
 
             if valid_id_dict["PSU"]:
                 self.power_draw_check()
-        except TypeError as e:
+        except TypeError:
             clear_screen()
             print("There was an error when attempting to process this request. Please try again.")
 
@@ -212,44 +215,43 @@ class Compatibility:
         """
         clear_screen()
         self.total_power_consuption = build_power_draw
-        #Validate that a motherboard exists
+
+        # Validate that a motherboard exists
         if not build_object["Motherboard"]:
             print("A valid build requires a single motherboard. Please select one for your build.")
-            return False
+            return
 
-        #Validate that a ram exists
+        # Validate that RAM exists
         if not build_object["RAM"]:
             print("A valid build requires RAM. Please add to your build.")
             print("Keep in mind that your Motherboard has a limited number of RAM slots.")
-            return False
+            return
 
-        #Validate that a cpu exists
-        elif not build_object["CPU"]:
+        # Validate that a CPU exists
+        if not build_object["CPU"]:
             print("A valid build requires a CPU. Please select one for your build.")
             print("Please note that your Motherboard socket and CPU socket need to match.")
-            return False
+            return
 
-        #Validate that storage exists
-        elif not build_object["Storage"]:
+        # Validate that storage exists
+        if not build_object["Storage"]:
             print("A valid build requires Storage. Please select one for your build.")
-            return False
+            return
 
-        #Validate that a psu exists
-        elif not build_object["PSU"]:
+        # Validate that a PSU exists
+        if not build_object["PSU"]:
             print("A valid build requires a Power Supply (PSU). Please select one for your build.")
-            return False
+            return
 
-        else:
-             #Validate motherboard and cpu are compatible
-            self.motherboard_cpu_validation(build_object["Motherboard"], build_object["CPU"])
+        # Validate motherboard and CPU compatibility
+        self.motherboard_cpu_validation(build_object["Motherboard"], build_object["CPU"])
 
-            #Validate that motherboard ram slots <= total number of ram
-            self.motherboard_ram_slot_validation(build_object["Motherboard"], build_object["RAM"])
+        # Validate that motherboard RAM slots <= total number of RAM
+        self.motherboard_ram_slot_validation(build_object["Motherboard"], build_object["RAM"])
 
-            #Validate that ram types are the same if 2>
-            self.ram_id_validation(build_object["RAM"])
+        # Validate that RAM types are the same if there are more than 1
+        self.ram_id_validation(build_object["RAM"])
 
-            #Validate that the PSU can support the power draw
-            self.power_draw_check()
-            print("")
-            return True
+        # Validate that the PSU can support the power draw
+        self.power_draw_check()
+        print("")
