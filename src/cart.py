@@ -5,15 +5,15 @@ class Cart:
     def __init__(self, user_object, inventory_object):
         self.user_object = user_object
         self.inventory_object = inventory_object
-        
+
         self.total_cost: int = 0
         self.build_cost: int = 0
         self.cart = {}
-    
+
     def default(self):
         clear_screen()
         print("Not a valid option, please try again.")
-    
+
     def checkout(self):
         if self.user_object.get_budget() < self.total_cost:
             clear_screen()
@@ -32,7 +32,6 @@ class Cart:
         else:
             return
 
-    
     def add_item(self, part_id=None):
         clear_screen()
         if part_id is None:
@@ -44,7 +43,7 @@ class Cart:
                 if item.id.lower() == part_id.lower():
                     self.cart[item.id] = item
                     self.total_cost = self.total_cost + item.price
-    
+
     def add_build(self, build_data, build_cost):
         self.build_cost = 0
         self.cart["BUILD"] = build_data
@@ -56,7 +55,7 @@ class Cart:
         if part_id is None:
             print("What is the item ID of the part you want to remove?")
             part_id = input("Item ID: ")
-        
+
         if part_id.upper() in self.cart:
             if part_id.lower() == "build":
                 self.total_cost -= self.build_cost
@@ -67,7 +66,7 @@ class Cart:
             del self.cart[part_id.upper()]
             clear_screen()
             print(f"{item_name} was successfully removed from your cart.\n")
-    
+
     def clear_cart(self):
         clear_screen()
         print("Are you sure you wish to clear the cart. You will lose all data.")
@@ -78,7 +77,7 @@ class Cart:
         else:
             clear_screen()
             pass
-    
+
     def cart_display(self):
         if not self.cart:
             print("Your cart is currently empty.")
@@ -88,11 +87,11 @@ class Cart:
                     print("Custom PC Build")
                     print(f"    Motherboard:\n         {item_object["Motherboard"].name} ({item_object["Motherboard"].id.lower()}) - ${item_object["Motherboard"].price:,}.00")
                     print(f"    CPU:\n         {item_object["CPU"].name} ({item_object["CPU"].id.lower()}) - ${item_object["CPU"].price:,}.00")
-                    
+
                     if item_object["GPU"]:
                         print(f"    GPU:\n         {item_object["GPU"].name} ({item_object["GPU"].id.lower()}) - ${item_object["GPU"].price:,}.00")
                     print(f"    PSU:\n         {item_object["PSU"].name} ({item_object["PSU"].id.lower()}) - ${item_object["PSU"].price:,}.00")
-                    
+
                     if item_object["RAM"]:
                         if len(item_object["RAM"]) == 1:
                             print(f"    RAM:\n         {item_object["RAM"][0].name} ({item_object["RAM"][0].id.lower()}) - ${item_object["RAM"][0].price:,}.00")
@@ -100,7 +99,7 @@ class Cart:
                             print("    RAM:")
                             for dimm in item_object["RAM"]:
                                 print(f"         {dimm.name} ({dimm.id.lower()}) - ${dimm.price:,}.00")
-                    
+
                     if item_object["Storage"]:
                         if len(item_object["Storage"]) == 1:
                             print(f"    Storage:\n         {item_object["Storage"][0].name} ({item_object["Storage"][0].id.lower()}) - ${item_object["Storage"][0].price:,}.00")
