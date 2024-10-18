@@ -23,6 +23,32 @@ Functions:
 from src.utils import clear_screen
 
 class Build:
+    """
+    Manages the creation and modification of a PC build for the user.
+
+    This class allows users to add or remove components (CPU, GPU, RAM, etc.) 
+    to/from a build, check compatibility, track the total cost and power draw, 
+    and manage interactions with the shopping cart and user inventory.
+
+    Attributes:
+        user_object: The user associated with the build.
+        cart_object: The shopping cart for storing completed builds.
+        inventory_object: The inventory of available parts.
+        compatibility_object: Handles compatibility checks for the build.
+        total_cost (int): The total cost of the build.
+        total_power_draw (int): The total power draw of the build.
+        build (dict): Dictionary holding the components of the build.
+
+    Methods:
+        add_item(part_id): Adds an item to the build, updating cost and power draw.
+        remove_item(): Removes an item from the build, updating cost and power draw.
+        clear_build(): Resets the build, clearing all components and data.
+        add_to_cart(): Adds the current build to the shopping cart if it's compatible.
+        display_build_list(): Displays the list of current items in the build.
+        build_display(): Displays details of the build along with menu options.
+        build_menu(): Provides a menu for interacting with the build.
+    """
+
     def __init__(self, user_object, cart_object, inventory_object, compatibility_object):
         self.user_object = user_object
         self.cart_object = cart_object
