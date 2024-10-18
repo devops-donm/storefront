@@ -1,5 +1,5 @@
 from src.utils import clear_screen
-from typing import List, Union
+from typing import List
 
 class Item:
     def __init__(self, id: str, type: str, name: str, price: int, power_draw: int = 0):
@@ -124,7 +124,7 @@ def print_categories():
     for category in available_category_options:
         print(category)
 
-def parts_dict(inventory_data):
+def gen_parts_dict(inventory_data):
     parts_dict = {
             "cpu": [],
             "gpu": [],
@@ -143,7 +143,7 @@ def list_parts(inventory_data):
     Fuction to list parts from inventory based on user-specified category.
     """
     clear_screen()
-    parts_dictionary = parts_dict(inventory_data)
+    parts_dictionary = gen_parts_dict(inventory_data)
     print_categories()
     print("\nFrom the provided categories what would you like to list? ")
     user_input = input("Option: ").lower()
@@ -173,7 +173,7 @@ def get_details(inventory_data, part_id=None):
 
         clear_screen()
         if user_input == 'm':
-            return
+            return None
 
         for item in inventory_data.items:
             if item.id.lower() == user_input.lower():
@@ -210,5 +210,3 @@ def get_details(inventory_data, part_id=None):
         for item in inventory_data.items:
             if item.id.lower() == part_id.lower():
                 return item
-            else:
-                return None
