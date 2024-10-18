@@ -1,3 +1,25 @@
+"""
+build.py
+
+This module defines the `Build` class, which handles the creation and management of a PC build.
+It allows users to add and remove components (such as CPU, GPU, RAM, PSU, etc.), check compatibility, 
+and manage the total cost and power draw of the build. It also integrates with user, cart, and inventory 
+objects to provide a full shopping experience.
+
+Classes:
+- Build: Manages the user's build, including adding/removing items, checking compatibility, 
+  adjusting cost/power, and interfacing with the shopping cart.
+
+Functions:
+- add_item: Adds an item to the build.
+- remove_item: Removes an item from the build.
+- clear_build: Clears the entire build.
+- add_to_cart: Adds the build to the cart if it passes compatibility checks.
+- display_build_list: Displays the current list of items in the build.
+- build_display: Displays build details and menu options.
+- build_menu: Displays and handles the build menu.
+"""
+
 from src.utils import clear_screen
 
 class Build:
