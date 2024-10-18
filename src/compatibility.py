@@ -1,3 +1,21 @@
+"""
+This module contains the `Compatibility` class, which is used to validate the 
+compatibility of computer hardware components. The class supports checking 
+compatibility for various parts such as CPUs, GPUs, RAM, power supplies (PSUs), 
+motherboards, and storage devices. It ensures that components are correctly 
+matched in terms of sockets, RAM slots, and power consumption.
+
+Key functionality includes:
+- Validating if CPU and motherboard sockets are compatible.
+- Checking if the number of RAM modules fits within the available motherboard slots.
+- Ensuring that power draw from components does not exceed the PSU's capacity.
+- Validating if all necessary components for a build are included and compatible.
+
+Usage:
+Create an instance of `Compatibility` by passing an inventory object. Then use
+methods like `compatibility_check` or `build_check` to perform the validation 
+process.
+"""
 from src.utils import clear_screen
 
 class Compatibility:
