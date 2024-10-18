@@ -19,6 +19,11 @@ process.
 from src.utils import clear_screen
 
 class Compatibility:
+    """
+    Compatibility class to check and validate the compatibility of various computer parts,
+    such as CPU, RAM, PSU, Motherboard, and Storage. It also calculates the power consumption 
+    and performs various validation checks on the selected parts.
+    """
     def __init__(self, inventory_object):
         self.inventory_object = inventory_object
         self.total_power_consuption: int = 0
