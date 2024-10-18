@@ -103,9 +103,12 @@ class Build:
                     "Motherboard": None,
                     "Storage": []
                     }
+            self.total_cost = 0
+            self.total_power_draw = 0
+            print("Build has successfully been reset.")
         else:
             clear_screen()
-            self.default()
+            print("Build did not get reset.")
 
     def add_to_cart(self):
         compatibility_test = self.compatibility_object.build_check(self.build, self.total_power_draw)
