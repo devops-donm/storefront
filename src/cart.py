@@ -135,7 +135,6 @@ class Cart:
             clear_screen()
         else:
             clear_screen()
-            pass
 
     def cart_display(self):
         """Displays the contents of the cart, user details, and the total cost."""
