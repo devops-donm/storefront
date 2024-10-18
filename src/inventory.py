@@ -8,7 +8,7 @@ class Item:
         self.name = name
         self.price = price
         self.power_draw = power_draw
-    
+
     def __str__(self) -> str:
         return f"{self.name} ({self.type}) - ${self.price}"
 
@@ -33,7 +33,8 @@ class PSU(Item):
         self.power_supplied = power_supplied
 
 class Motherboard(Item):
-    def __init__(self, id: str, name: str, price: int, power_draw: float, socket: str, ram_slots: int):
+    def __init__(self, id: str, name: str, price: int, power_draw: float,
+                 socket: str, ram_slots: int):
         super().__init__(id, "Motherboard", name, price, power_draw)
         self.socket = socket
         self.ram_slots = ram_slots
@@ -46,7 +47,7 @@ class Storage(Item):
 class Inventory:
     def __init__(self) -> None:
         self.items: List[Item] = []
-    
+
     def add_item(self, item: Item):
         self.items.append(item)
 
@@ -132,7 +133,7 @@ def parts_dict(inventory_data):
             "motherboard": [],
             "storage": []
         }
-    
+
     for item in inventory_data.items:
         parts_dict[item.type.lower()].append(item)
     return parts_dict
@@ -163,7 +164,7 @@ def list_parts(inventory_data):
 
 def get_details(inventory_data, part_id=None):
     part_details = None
-    
+
     if part_id is None:
         clear_screen()
         print("\nBy the Part ID what part would you like the details for? ")
@@ -173,39 +174,39 @@ def get_details(inventory_data, part_id=None):
         clear_screen()
         if user_input == 'm':
             return
-        
+
         for item in inventory_data.items:
             if item.id.lower() == user_input.lower():
                 part_details = item
-        
+
         part_name = part_details.name
         part_price = part_details.price
         part_id = part_details.id
         part_type = part_details.type
         part_power = None
         other_attr = []
-        
+
         for attr, value in vars(part_details).items():
             if attr == 'type':
                 if value != "PSU":
                     part_power = part_details.power_draw
                 else:
                     part_power = part_details.power_supplied
-            
+
             if attr not in ('name', 'price', 'id', 'type', 'power_draw', 'power_supply'):
                 other_attr.append({attr: value})
-        
+
         print(f"{part_name} ({part_id.lower()})")
         print(f"\tType: {part_type}")
         print(f"\tPrice: ${part_price:,}.00")
         print(f"\tPower: {part_power}W")
-        
+
         for other_attr_data in other_attr:
             for attr, value in other_attr_data.items():
                 print(f"\t{attr}: {value}")
 
     else:
-        #TODO: If part_id is provided, directly find the part.
+        # If part_id is provided, directly find the part.
         for item in inventory_data.items:
             if item.id.lower() == part_id.lower():
                 return item
