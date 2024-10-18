@@ -1,9 +1,18 @@
+"""
+This module provides a User class for managing user information including name and budget.
+It includes methods for updating and retrieving these attributes.
+"""
 from src.utils import clear_screen
 
 class User:
     """
-    A class to represent a user with a name and budget. 
-    Provides methods to update and retrieve these attributes.
+    Represents a user with a name and budget.
+    
+    Methods:
+    - get_name: Returns the user's name.
+    - get_budget: Returns the user's budget.
+    - update_name: Prompts the user to input and set their name (with a max length).
+    - update_budget: Prompts the user to input and set a valid budget.
     """
     def __init__(self):
         self.user_name = None
