@@ -256,7 +256,6 @@ class Build:
         This method provides a summary of the build in a readable format with proper 
         formatting of the prices (using commas).
         """
-        #TODO: This will need to be cleaned up later.
         for item_key, item_object in self.build.items():
             if not item_object:
                 print(f"{item_key.upper()}: None")
