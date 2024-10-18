@@ -74,7 +74,8 @@ class Cart:
         Adds an individual item to the cart by its part ID.
         
         Args:
-            part_id (str, optional): The ID of the item to add. If not provided, the user is prompted for input.
+            part_id (str, optional): The ID of the item to add. If not provided, the user is 
+            prompted for input.
         """
         clear_screen()
         if part_id is None:
@@ -105,7 +106,8 @@ class Cart:
         Removes an item from the cart by its part ID.
         
         Args:
-            part_id (str, optional): The ID of the item to remove. If not provided, the user is prompted for input.
+            part_id (str, optional): The ID of the item to remove. If not provided, the user is 
+            prompted for input.
         """
         clear_screen()
         if part_id is None:
@@ -208,7 +210,8 @@ class Cart:
 
     def cart_menu(self):
         """
-        Displays the cart menu and handles user interactions like adding/removing items or checkout.
+        Displays the cart menu and handles user interactions like adding/removing items or 
+        checkout.
         """
         clear_screen()
         while True:
