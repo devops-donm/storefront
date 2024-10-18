@@ -23,9 +23,9 @@ To run the application:
 import json
 import sys
 
-from src.inventory import load_inventory
-from src.menu import main_menu
-from src.utils import clear_screen
+from src.inventory import load_inventory # pylint: disable=import-error
+from src.menu import main_menu # pylint: disable=import-error
+from src.utils import clear_screen # pylint: disable=import-error
 
 def process_inventory_file(inventory_file):
     """

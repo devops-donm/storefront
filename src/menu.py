@@ -12,9 +12,12 @@ from src.cart import Cart # pylint: disable=import-error
 from src.user import User # pylint: disable=import-error
 
 def default():
+    """Displays an error message for invalid input."""
+    clear_screen()
     print("Not a valid option, please try again.")
 
 def help_option():
+    """Display the help options to the user."""
     print("""
           - list: Get a list of parts by category.
           - details: Get the details of an individial item by providing the item ID.
@@ -29,11 +32,13 @@ def help_option():
           """)
 
 def exit_program():
+    """Gracefully exit the program."""
     clear_screen()
     print("Thank you and Goodbye!")
     sys.exit(0)
 
 def display_menu(user_name, budget):
+    """Main view that is displayed onto the terminal."""
     print("--------------------------------------------------------------------------")
     print(f"Name:   {user_name}")
     print(f"Budget: ${budget:,}.00")
@@ -49,6 +54,11 @@ def display_menu(user_name, budget):
     print("11. Help    12. Exit")
 
 def main_menu(inventory_data):
+    """
+    Displays the main menu and handles user input for selecting various options related to 
+    inventory, compatibility checks, build configurations, cart management, and user 
+    settings. Loops continuously until the user opts to exit the program.
+    """
     user_object = User()
     user_object.update_name()
     user_object.update_budget()

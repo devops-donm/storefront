@@ -25,8 +25,8 @@ src\\build.py:309:31: E1101: Instance of 'list' has no 'name' member (no-member)
 src\\build.py:309:51: E1101: Instance of 'list' has no 'id' member (no-member)
 src\\build.py:310:28: E1101: Instance of 'list' has no 'price' member (no-member)
 """
-
-from src.utils import clear_screen
+# pylint: disable=R0801
+from src.utils import clear_screen # pylint: disable=import-error
 
 class Build:
     """
@@ -312,8 +312,8 @@ class Build:
                 else:
                     print(f"{item_key.upper()}:")
                     print(
-                        f"    {item_object.name} ({item_object.id.lower()}) - "
-                        f"${item_object.price:,}.00"
+                        f"    {item_object.name} ({item_object.id.lower()}) - " # pylint: disable=no-member
+                        f"${item_object.price:,}.00" # pylint: disable=no-member
                     )
 
     def build_display(self):
