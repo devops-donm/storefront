@@ -2,9 +2,9 @@
 build.py
 
 This module defines the `Build` class, which handles the creation and management of a PC build.
-It allows users to add and remove components (such as CPU, GPU, RAM, PSU, etc.), check compatibility, 
-and manage the total cost and power draw of the build. It also integrates with user, cart, and inventory 
-objects to provide a full shopping experience.
+It allows users to add and remove components (such as CPU, GPU, RAM, PSU, etc.), check 
+compatibility, and manage the total cost and power draw of the build. It also integrates 
+with user, cart, and inventory objects to provide a full shopping experience.
 
 Classes:
 - Build: Manages the user's build, including adding/removing items, checking compatibility, 
