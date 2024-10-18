@@ -44,13 +44,15 @@ class Compatibility:
 
     def check_ids(self, item_id_list):
         """
-        Validates the provided item IDs, matches them with the inventory, and organizes them into categories.
+        Validates the provided item IDs, matches them with the inventory, and organizes them into 
+        categories.
 
         Args:
             item_id_list (list): List of item IDs provided by the user.
 
         Returns:
-            dict: A dictionary with categorized parts (CPU, GPU, RAM, etc.), or None if invalid ID is provided.
+            dict: A dictionary with categorized parts (CPU, GPU, RAM, etc.), or None if invalid ID 
+            is provided.
         """
         part_dict = {
             "CPU": [],
@@ -122,7 +124,8 @@ class Compatibility:
 
     def motherboard_ram_slot_validation(self, motherboard, ram_list):
         """
-        Validates whether the number of RAM sticks can be supported by the motherboard's available slots.
+        Validates whether the number of RAM sticks can be supported by the motherboard's available 
+        slots.
 
         Args:
             motherboard (object): The motherboard object.
