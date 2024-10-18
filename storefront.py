@@ -37,6 +37,19 @@ from src.menu import main_menu
 from src.utils import clear_screen
 
 def process_inventory_file(inventory_file):
+    """
+    Validates and loads inventory data from a JSON file.
+
+    Args:
+        inventory_file (str): Path to the JSON file containing the inventory data.
+
+    Returns:
+        dict: Loaded inventory data if the file is valid and successfully processed.
+
+    Exits:
+        On file format, existence, or decoding errors, the program will terminate.
+    """
+
     # Check if the file has a .json extension
     if not inventory_file.endswith('.json'):
         print("Error: File must be a .json file.")
