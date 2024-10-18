@@ -4,17 +4,20 @@ Menu system for storefront.py
 """
 import sys
 
-from src.utils import clear_screen
-from src.inventory import list_parts, get_details
-from src.compatibility import Compatibility
-from src.build import Build
-from src.cart import Cart
-from src.user import User
+from src.utils import clear_screen # pylint: disable=import-error
+from src.inventory import list_parts, get_details # pylint: disable=import-error
+from src.compatibility import Compatibility # pylint: disable=import-error
+from src.build import Build # pylint: disable=import-error
+from src.cart import Cart # pylint: disable=import-error
+from src.user import User # pylint: disable=import-error
 
 def default():
+    """Displays an error message for invalid input."""
+    clear_screen()
     print("Not a valid option, please try again.")
 
 def help_option():
+    """Display the help options to the user."""
     print("""
           - list: Get a list of parts by category.
           - details: Get the details of an individial item by providing the item ID.
@@ -29,11 +32,13 @@ def help_option():
           """)
 
 def exit_program():
+    """Gracefully exit the program."""
     clear_screen()
     print("Thank you and Goodbye!")
     sys.exit(0)
 
 def display_menu(user_name, budget):
+    """Main view that is displayed onto the terminal."""
     print("--------------------------------------------------------------------------")
     print(f"Name:   {user_name}")
     print(f"Budget: ${budget:,}.00")
@@ -49,8 +54,11 @@ def display_menu(user_name, budget):
     print("11. Help    12. Exit")
 
 def main_menu(inventory_data):
-
-    #TODO: Move this initial logic over to storefront.py and add to function arg.
+    """
+    Displays the main menu and handles user input for selecting various options related to 
+    inventory, compatibility checks, build configurations, cart management, and user 
+    settings. Loops continuously until the user opts to exit the program.
+    """
     user_object = User()
     user_object.update_name()
     user_object.update_budget()
@@ -59,7 +67,7 @@ def main_menu(inventory_data):
     compatibility_object = Compatibility(inventory_data)
     cart_object = Cart(user_object, inventory_data)
     build_object = Build(user_object, cart_object, inventory_data, compatibility_object)
-    
+
     while True:
         display_menu(user_object.get_name(), user_object.get_budget())
         user_input = input("\nSelect an option: ").strip().lower()
@@ -68,10 +76,10 @@ def main_menu(inventory_data):
         menu_dict: dict = {
             "1": lambda: list_parts(inventory_data),
             "list": lambda: list_parts(inventory_data),
-            
+
             "2": lambda: get_details(inventory_data),
             "detail": lambda: get_details(inventory_data),
-            
+
             "3": compatibility_object.compatibility_check,
             "compatibility": compatibility_object.compatibility_check,
 
@@ -91,7 +99,7 @@ def main_menu(inventory_data):
             "11": help_option,
             "help": help_option,
             "h": help_option,
-            
+
             "12": exit_program,
             "exit": exit_program,
             "e": exit_program,
