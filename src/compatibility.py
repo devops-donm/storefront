@@ -8,7 +8,7 @@ class Compatibility:
     def update_power_draw(self, item_type, wattage):
         if item_type != "PSU":
             wattage = wattage * -1
-        
+
         self.total_power_consuption = self.total_power_consuption + wattage
 
     def check_ids(self, item_id_list):
@@ -45,13 +45,14 @@ class Compatibility:
                 # Ending the validation process and returning None if the user provides
                 # an invalid part id.
                 return None
-        
+
         # return the completed dict.
         return part_dict
 
     def motherboard_cpu_validation(self, motherboard, cpu):
         if motherboard.socket != cpu.socket:
-            print(f"{cpu.name} ({cpu.id}) is not compatible with {motherboard.name} ({motherboard.id})")
+            print(f"{cpu.name} ({cpu.id}) is not compatible with {motherboard.name} "
+                  f"({motherboard.id})")
         else:
             print(f"{cpu.name} ({cpu.id}) is compatible with {motherboard.name} ({motherboard.id})")
 
@@ -74,7 +75,8 @@ class Compatibility:
         if ram_list_len <= motherboard_ram_slots:
             print("Motherboard is able to support the total number of RAM listed.")
         else:
-            print("The total amount of RAM listed is greater than the number of slots on the motherboard.")
+            print("The total amount of RAM listed is greater than the number of slots on the \
+                  motherboard.")
 
     def power_draw_check(self):
         if self.total_power_consuption > 0:
@@ -97,11 +99,12 @@ class Compatibility:
         # Validate there is more than one item_id in the list
         if len(item_id_list) <= 1:
             clear_screen()
-            print("""The compatibility check requires two or more parts.\nUnable to complete this request.""")
+            print("""The compatibility check requires two or more parts.\nUnable to complete this \
+                  request.""")
             return None
-        
+
         valid_id_dict = self.check_ids(item_id_list)
-        
+
         try:
             clear_screen()
             print(f"Power Draw: {self.total_power_consuption}W")
@@ -116,16 +119,16 @@ class Compatibility:
                             self.motherboard_cpu_validation(motherboard, cpu)
                     if valid_id_dict["RAM"]:
                         self.motherboard_ram_slot_validation(motherboard, valid_id_dict["RAM"])
-                
+
             if valid_id_dict["RAM"]:
                 self.ram_id_validation(valid_id_dict["RAM"])
-            
+
             if valid_id_dict["PSU"]:
                 self.power_draw_check()
         except TypeError as e:
             clear_screen()
             print("There was an error when attempting to process this request. Please try again.")
-    
+
     def build_check(self, build_object, build_power_draw):
         clear_screen()
         self.total_power_consuption = build_power_draw
@@ -139,13 +142,13 @@ class Compatibility:
             print("A valid build requires RAM. Please add to your build.")
             print("Keep in mind that your Motherboard has a limited number of RAM slots.")
             return False
-        
+
         #TODO: validate that a cpu exists
         elif not build_object["CPU"]:
             print("A valid build requires a CPU. Please select one for your build.")
             print("Please note that your Motherboard socket and CPU socket need to match.")
             return False
-        
+
         #TODO: validate that storage exists
         elif not build_object["Storage"]:
             print("A valid build requires Storage. Please select one for your build.")
@@ -155,11 +158,11 @@ class Compatibility:
         elif not build_object["PSU"]:
             print("A valid build requires a Power Supply (PSU). Please select one for your build.")
             return False
-        
+
         else:
              #TODO: validate motherboard and cpu are compatible
             self.motherboard_cpu_validation(build_object["Motherboard"], build_object["CPU"])
-            
+
             #TODO: validate that motherboard ram slots <= total number of ram
             self.motherboard_ram_slot_validation(build_object["Motherboard"], build_object["RAM"])
 
