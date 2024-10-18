@@ -46,14 +46,20 @@ class User:
     def update_budget(self):
         """
         Prompts the user to input a valid positive integer for the budget
-        and updates the budget attribute. Raises an error if the input is invalid.
+        and updates the budget attribute. If the input is invalid or 0, prompts again.
         """
         clear_screen()
-        try:
-            budget = int(input("What is your budget? "))
-            if budget <= 0:
-                raise ValueError("Budget must be a positive amount.")
-            else:
-                self.budget = budget
-        except ValueError as e:
-            print(f"Invalid input. {e} Please enter a valid positive integer.")
+
+        while True:
+            try:
+                budget = int(input("What is your budget? "))
+                if budget == 0:
+                    print("Your budget can't be 0. Please try again.")
+                elif budget < 0:
+                    print("Budget must be a positive integer. Please try again.")
+                else:
+                    self.budget = budget
+                    print(f"Budget updated to {self.budget}.")
+                    break
+            except ValueError:
+                print("Invalid input. Please enter a valid integer.")
