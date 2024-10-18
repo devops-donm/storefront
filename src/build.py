@@ -330,7 +330,7 @@ class Build:
             user_input = input("\nSelect an option: ").strip().lower()
 
             # Break the while loop and return to the main menu
-            if user_input == "m" or user_input == 'M' or user_input == 'main_menu':
+            if user_input.lower() in ('m', 'main_menu'):
                 clear_screen()
                 break
 
