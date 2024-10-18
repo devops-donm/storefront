@@ -21,7 +21,7 @@ class User:
     def get_name(self):
         """Returns the user name."""
         return self.user_name
-    
+
     def get_budget(self):
         """Returns the user budget."""
         return self.budget
