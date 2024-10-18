@@ -67,21 +67,59 @@ class Build:
                     }
 
     def default(self):
+        """
+        Handle invalid options by prompting the user to try again.
+        """
         print("Not a valid option, please try again.")
 
     def increase_total_cost(self, amount):
+        """
+        Increase the total cost by a specified amount.
+
+        Args:
+            amount (int): The amount to add to the total cost.
+        """
         self.total_cost += amount
 
     def decrease_total_cost(self, amount):
+        """
+        Decrease the total cost by a specified amount.
+
+        Args:
+            amount (int): The amount to subtract from the total cost.
+        """
         self.total_cost -= amount
 
     def increase_available_power(self, wattage):
+        """
+        Increase the total power draw by a specified wattage.
+
+        Args:
+            wattage (int): The amount of power (in watts) to add to the total power draw.
+        """
         self.total_power_draw += wattage
 
     def decreate_available_power(self, wattage):
+        """
+        Decrease the total power draw by a specified wattage.
+
+        Args:
+            wattage (int): The amount of power (in watts) to subtract to the total power draw.
+        """
         self.total_power_draw -= wattage
 
     def add_item(self, part_id=None):
+        """
+        Add an item to the build based on its part ID. If no part ID is provided,
+        prompts the user for input and searches the inventory for a matching item.
+
+        Args:
+            part_id (str, optional): The ID of the part to add. If None, the method
+            will prompt the user to input a part ID.
+        
+        The method updates the build with the part, adjusts the total cost, and updates
+        power draw or supplied power based on the type of item (RAM, Storage, PSU, etc.).
+        """
         clear_screen()
         if part_id is None:
             print("What is the part ID of the item you want to add?")
@@ -108,6 +146,16 @@ class Build:
             pass
 
     def remove_item(self):
+        """
+        Remove an item from the build based on its part type. Prompts the user to input
+        the part type and optionally a specific part ID if multiple items of that type exist.
+
+        The method adjusts the build by removing the part, clears the item from the build,
+        and prompts the user when no items are available to delete.
+
+        After removing the item, future steps will need to adjust the total cost and power
+        draw or supplied power (marked as TODO in the code).
+        """
         clear_screen()
         print("What is the part type of the item you want to remove?")
         part = input("Part Type: ")
@@ -138,6 +186,18 @@ class Build:
                     print(f"{item.name} ({item.id}) was removed from build.\n")
 
     def clear_build(self):
+        """
+        Clear the current build after user confirmation.
+
+        Prompts the user for confirmation before resetting the build. If confirmed, 
+        it resets the build dictionary to default values (None for single components 
+        like CPU, GPU, PSU, etc., and empty lists for RAM and Storage), sets the 
+        total cost and total power draw to 0.
+
+        If the user chooses not to reset, the build remains unchanged.
+
+        The function clears the screen before and after important prompts.
+        """
         clear_screen()
         print("Are you sure you wish to clear the current build? You will lose all data.")
         user_input = input("Yes/No: ")
@@ -159,6 +219,19 @@ class Build:
             print("Build did not get reset.")
 
     def add_to_cart(self):
+        """
+        Add the current build to the shopping cart if it passes the compatibility check.
+
+        The method performs a compatibility test on the current build using the 
+        `compatibility_object`. If the build passes the test, it adds the build 
+        and its total cost to the cart using the `cart_object` and notifies the user 
+        that the build has been successfully added.
+
+        If the build is not compatible, the method alerts the user and suggests reviewing 
+        the compatibility check for more details.
+
+        This method clears the screen before displaying messages.
+        """
         compatibility_test = self.compatibility_object.build_check(
             self.build, self.total_power_draw
         )
@@ -171,6 +244,21 @@ class Build:
             print("Build is not compatible. See Build - Compatibility Check for more information.")
 
     def display_build_list(self):
+        """
+        Display the current build components and their details.
+
+        This method iterates through the build dictionary and prints out the name, 
+        ID, and price of each component. For components that allow multiple entries 
+        (such as RAM and Storage), it lists each item in the respective category. 
+        If a component is missing from the build, it displays 'None' for that component.
+
+        Note:
+            - RAM and Storage are handled separately as they can have multiple items.
+            - The method includes a TODO for future cleanup and refinement.
+
+        This method provides a summary of the build in a readable format with proper 
+        formatting of the prices (using commas).
+        """
         #TODO: This will need to be cleaned up later.
         for item_key, item_object in self.build.items():
             if not item_object:
@@ -195,6 +283,18 @@ class Build:
                     )
 
     def build_display(self):
+        """
+        Display the current build overview and options for managing the build.
+
+        This method prints out a formatted display of the current user's name, 
+        budget, total cost of the build, and the total power draw in watts. 
+        It also presents a menu of options that the user can choose from, including 
+        adding or removing items, checking compatibility, clearing the build, or 
+        adding the build to the cart.
+
+        The display includes section separators for readability and a prompt to 
+        return to the main menu by pressing 'm'.
+        """
         print("--------------------------------------------------------------------------")
         print(f"Name:   {self.user_object.get_name()}")
         print(f"Budget: ${self.user_object.get_budget():,}.00")
@@ -211,6 +311,21 @@ class Build:
         print("m: Main Menu")
 
     def build_menu(self):
+        """
+        Display the build menu and handle user input to manage the current build.
+
+        This method clears the screen, then enters a loop to continuously display 
+        the current build list and build menu options. The user can select from 
+        a variety of options, such as adding an item, removing an item, checking 
+        build compatibility, clearing the build, or adding the build to the cart.
+
+        The user can input 'm' or 'main_menu' to return to the main menu, 
+        which breaks the loop.
+
+        The menu options are mapped to their corresponding functions using 
+        a dictionary (`menu_dict`), and the selected option is executed based 
+        on user input. If the input is invalid, the default method is called.
+        """
         clear_screen()
         while True:
             self.display_build_list()
