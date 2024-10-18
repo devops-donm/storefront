@@ -111,7 +111,9 @@ class Build:
             print("Build did not get reset.")
 
     def add_to_cart(self):
-        compatibility_test = self.compatibility_object.build_check(self.build, self.total_power_draw)
+        compatibility_test = self.compatibility_object.build_check(
+            self.build, self.total_power_draw
+        )
         if compatibility_test:
             self.cart_object.add_build(self.build, self.total_cost)
             clear_screen()
@@ -139,8 +141,10 @@ class Build:
 
                 else:
                     print(f"{item_key.upper()}:")
-                    print(f"    {item_object.name} ({item_object.id.lower()}) - ${item_object.price:,}.00")
-
+                    print(
+                        f"    {item_object.name} ({item_object.id.lower()}) - "
+                        f"${item_object.price:,}.00"
+                    )
 
     def build_display(self):
         print("--------------------------------------------------------------------------")
@@ -174,7 +178,9 @@ class Build:
             menu_dict: dict = {
                 "1": self.add_item,
                 "2": self.remove_item,
-                "3": lambda: self.compatibility_object.build_check(self.build, self.total_power_draw),
+                "3": lambda: self.compatibility_object.build_check(
+                    self.build, self.total_power_draw
+                ),
                 "4": self.clear_build,
                 "5": self.add_to_cart
             }
