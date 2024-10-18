@@ -1,6 +1,10 @@
 from src.utils import clear_screen
 
 class User:
+    """
+    A class to represent a user with a name and budget. 
+    Provides methods to update and retrieve these attributes.
+    """
     def __init__(self):
         self.user_name = None
         self.budget = 0
