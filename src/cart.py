@@ -13,6 +13,9 @@ Methods in Cart:
     - clear_cart(): Clears the entire cart after user confirmation.
     - cart_display(): Displays the contents of the cart along with the user's name and budget.
     - cart_menu(): Manages the cart menu and user actions.
+
+Acknowledged Pylint Standard Errors:
+src\\cart.py:18:0: E0401: Unable to import 'src.utils' (import-error)
 """
 import sys
 from src.utils import clear_screen
@@ -136,6 +139,58 @@ class Cart:
         else:
             clear_screen()
 
+    def display_build(self, item_object):
+        """Displays the contents of a builo in the cart."""
+        if item_object["Motherboard"]:
+            print(f"    Motherboard:\n         {item_object["Motherboard"].name}"
+                f" ({item_object["Motherboard"].id.lower()}) - "
+                f"${item_object["Motherboard"].price:,}.00"
+            )
+
+        if item_object["CPU"]:
+            print(f"    CPU:\n         {item_object["CPU"].name} "
+                f"({item_object["CPU"].id.lower()}) - "
+                f"${item_object["CPU"].price:,}.00"
+            )
+
+        if item_object["GPU"]:
+            print(f"    GPU:\n         {item_object["GPU"].name} "
+                    f"({item_object["GPU"].id.lower()}) - "
+                    f"${item_object["GPU"].price:,}.00"
+            )
+
+        if item_object["PSU"]:
+            print(f"    PSU:\n         {item_object["PSU"].name} "
+                f"({item_object["PSU"].id.lower()}) - "
+                f"${item_object["PSU"].price:,}.00"
+            )
+
+        if item_object["RAM"]:
+            if len(item_object["RAM"]) == 1:
+                print(f"    RAM:\n         {item_object["RAM"][0].name} "
+                        f"({item_object["RAM"][0].id.lower()}) - "
+                        f"${item_object["RAM"][0].price:,}.00"
+                )
+            else:
+                print("    RAM:")
+                for dimm in item_object["RAM"]:
+                    print(f"         {dimm.name} ({dimm.id.lower()}) - "
+                            f"${dimm.price:,}.00"
+                    )
+
+        if item_object["Storage"]:
+            if len(item_object["Storage"]) == 1:
+                print(f"    Storage:\n         {item_object["Storage"][0].name} "
+                        f"({item_object["Storage"][0].id.lower()}) - "
+                        f"${item_object["Storage"][0].price:,}.00"
+                )
+            else:
+                print("    Storage:")
+                for drive in item_object["Storage"]:
+                    print(f"         {drive.name} ({drive.id.lower()}) - "
+                            f"${drive.price:,}.00")
+        print("")
+
     def cart_display(self):
         """Displays the contents of the cart, user details, and the total cost."""
         if not self.cart:
@@ -144,53 +199,8 @@ class Cart:
             for item_key, item_object in self.cart.items():
                 if item_key == "BUILD":
                     print("Custom PC Build")
+                    self.display_build(item_object)
 
-                    print(f"    Motherboard:\n         {item_object["Motherboard"].name}"
-                          f" ({item_object["Motherboard"].id.lower()}) - "
-                          f"${item_object["Motherboard"].price:,}.00"
-                    )
-
-                    print(f"    CPU:\n         {item_object["CPU"].name} "
-                          f"({item_object["CPU"].id.lower()}) - "
-                          f"${item_object["CPU"].price:,}.00"
-                    )
-
-                    if item_object["GPU"]:
-                        print(f"    GPU:\n         {item_object["GPU"].name} "
-                              f"({item_object["GPU"].id.lower()}) - "
-                              f"${item_object["GPU"].price:,}.00"
-                    )
-
-                    print(f"    PSU:\n         {item_object["PSU"].name} "
-                          f"({item_object["PSU"].id.lower()}) - "
-                          f"${item_object["PSU"].price:,}.00"
-                    )
-
-                    if item_object["RAM"]:
-                        if len(item_object["RAM"]) == 1:
-                            print(f"    RAM:\n         {item_object["RAM"][0].name} "
-                                  f"({item_object["RAM"][0].id.lower()}) - "
-                                  f"${item_object["RAM"][0].price:,}.00"
-                            )
-                        else:
-                            print("    RAM:")
-                            for dimm in item_object["RAM"]:
-                                print(f"         {dimm.name} ({dimm.id.lower()}) - "
-                                      f"${dimm.price:,}.00"
-                                )
-
-                    if item_object["Storage"]:
-                        if len(item_object["Storage"]) == 1:
-                            print(f"    Storage:\n         {item_object["Storage"][0].name} "
-                                  f"({item_object["Storage"][0].id.lower()}) - "
-                                  f"${item_object["Storage"][0].price:,}.00"
-                            )
-                        else:
-                            print("    Storage:")
-                            for drive in item_object["Storage"]:
-                                print(f"         {drive.name} ({drive.id.lower()}) - "
-                                      f"${drive.price:,}.00")
-                    print("")
                 else:
                     print(f"{item_object.name} ({item_object.id.lower()}) - "
                           f"${item_object.price:,}.00")
