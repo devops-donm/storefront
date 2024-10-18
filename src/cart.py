@@ -124,7 +124,6 @@ class Cart:
                 print(f"{item_name} was successfully removed from your cart.\n")
             del self.cart[part_id.upper()]
             clear_screen()
-            
 
     def clear_cart(self):
         """Clears the entire shopping cart after user confirmation."""
