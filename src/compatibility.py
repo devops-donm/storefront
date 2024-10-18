@@ -19,7 +19,7 @@ process.
 Acknowledged Pylint Standard Errors:
 src\\compatibility.py:19:0: E0401: Unable to import 'src.utils' (import-error)
 """
-from src.utils import clear_screen
+from src.utils import clear_screen # pylint: disable=import-error
 
 class Compatibility:
     """

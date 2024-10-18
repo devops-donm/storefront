@@ -18,7 +18,7 @@ Acknowledged Pylint Standard Errors:
 src\\cart.py:18:0: E0401: Unable to import 'src.utils' (import-error)
 """
 import sys
-from src.utils import clear_screen
+from src.utils import clear_screen # pylint: disable=import-error
 
 class Cart:
     """
