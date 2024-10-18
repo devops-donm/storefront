@@ -4,12 +4,12 @@ Menu system for storefront.py
 """
 import sys
 
-from src.utils import clear_screen
+from src.utils import clear_screen # pylint: disable=import-error
 from src.inventory import list_parts, get_details
-from src.compatibility import Compatibility
-from src.build import Build
-from src.cart import Cart
-from src.user import User
+from src.compatibility import Compatibility # pylint: disable=import-error
+from src.build import Build # pylint: disable=import-error
+from src.cart import Cart # pylint: disable=import-error
+from src.user import User # pylint: disable=import-error
 
 def default():
     print("Not a valid option, please try again.")
